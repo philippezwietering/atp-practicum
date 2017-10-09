@@ -58,12 +58,12 @@ class MixtureVessel(Vessel):
     def __init__(self, amount=0, colour=0, temperature=20):
         Vessel.__init__(self, amount, colour, temperature)
         self._heat = False
-        self._isPresent = True
+        self._isPresent = False
 
     def heat(self, state=False):
         self._heat = state
 
-    def togglePrescence(self):
+    def toggle(self):
         if self._isPresent:
             self._isPresent = False
         else:
@@ -71,6 +71,11 @@ class MixtureVessel(Vessel):
 
     def getPresence(self):
         return self._isPresent
+
+    def empty(self):
+        self._amount = 0
+        self._colour = 0
+        self._temperature = 20
 
     def update(self):
         """

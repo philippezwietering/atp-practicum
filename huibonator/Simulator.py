@@ -23,12 +23,15 @@ class Plant:
         self._sensors = {'color': ColourSensor(self._vessels['mix']),
          'temp': TemperatureSensor(self._vessels['mix']),
          'level': LevelSensor(self._vessels['mix']),
-         'reflex': ReflexSeonsor(self._vessels['mix'])}
+         'reflex': ReflexSeonsor(self._vessels['mix']),
+         'keypad': keypadSensor()}
         self._effectors = {'heater': Heater(self._vessels['mix']),
          'pumpA': Pump(self._vessels['a']),
          'valveA': Valve(self._vessels['a']),
          'pumpB': Pump(self._vessels['b']),
-         'valveB': Valve(self._vessels['b'])}
+         'valveB': Valve(self._vessels['b']),
+         'Yled': Led(None),
+         'Gled': Led(None)}
 
     def update(self) -> None:
         for vessel in self._vessels.values():
