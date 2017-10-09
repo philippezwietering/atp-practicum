@@ -59,8 +59,8 @@ class Heater(Effector):
 
 class Led(Effector):
 
-    def toggle(self):
-        if self._value:
-            self.switchOff()
-        else:
+    def set(self, c):
+        if c:
             self.switchOn()
+        else:
+            self.switchOff()
