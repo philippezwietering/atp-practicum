@@ -1,6 +1,6 @@
 # uncompyle6 version 2.12.0
 # Python bytecode 3.5 (3350)
-# Decompiled from: Python 3.5.2 (default, Nov 17 2016, 17:05:23) 
+# Decompiled from: Python 3.5.2 (default, Nov 17 2016, 17:05:23)
 # [GCC 5.4.0 20160609]
 # Embedded file name: .\Effector.py
 # Compiled at: 2017-08-29 16:43:31
@@ -56,3 +56,11 @@ class Heater(Effector):
                 self._vessel.heat(True)
         elif isinstance(self._vessel, MixtureVessel):
             self._vessel.heat(False)
+
+class Led(Effector):
+
+    def toggle(self):
+        if self._value:
+            self.switchOff()
+        else:
+            self.switchOn()

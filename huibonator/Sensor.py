@@ -80,3 +80,15 @@ class ReflexSeonsor(Sensor):
 
     def update(self):
         self._value = self._vessel.getPresence()
+
+class keypadSensor(Sensor):
+    def __init__(self):
+        self._value = 0
+        self._read = ''
+
+    def pressKey(self, c):
+        self._read = c
+        print(self._read)
+
+    def getKey(self):
+        return self._read

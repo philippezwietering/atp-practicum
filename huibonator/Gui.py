@@ -21,7 +21,7 @@ class GUI:
         pygame.font.init()
         self.__font = pygame.font.Font('font/OpenSans-Regular.ttf', 12)
         # Define a screen
-        self.__screen = pygame.display.set_mode((640, 400))
+        self.__screen = pygame.display.set_mode((1040, 400))
         pygame.display.set_caption('Liquid Mixer Simulator GUI')
         pygame.mouse.set_visible(True)
 
@@ -34,6 +34,7 @@ class GUI:
         self.__icons["temp"] = SensorIcon(self.__screen, 275, 125, self.__plant._sensors["temp"], "Temperature")
         self.__icons["level"] = SensorIcon(self.__screen, 275, 150, self.__plant._sensors["level"], "Level")
         self.__icons["color"] = SensorIcon(self.__screen, 275, 175, self.__plant._sensors["color"], "Colour")
+        self.__icons["reflex"] = SensorIcon(self.__screen, 275, 200, self.__plant._sensors["reflex"], "Iscup?")
 
         # Draw
         self.step()
@@ -54,22 +55,132 @@ class GUI:
         pygame.draw.rect(self.__screen, (240, 120, 0), [570, 10, 60, 30])
         pygame.draw.polygon(self.__screen, (240, 240, 240), [(585, 15), (585, 35), (600, 25)])
         pygame.draw.rect(self.__screen, (240, 240, 240), [605, 15, 10, 20])
+
         pygame.draw.rect(self.__screen, (240, 120, 0), [500, 50, 130, 30])
         pumpA = "Pump A: "+("on " if self.__plant._effectors["pumpA"].isOn() else "off")
         label = self.__font.render(pumpA, False, (240, 240, 240))
         self.__screen.blit(label, [530, 55])
+
         pygame.draw.rect(self.__screen, (240, 120, 0), [500, 90, 130, 30])
         pumpB = "Pump B: "+("on " if self.__plant._effectors["pumpB"].isOn() else "off")
         label = self.__font.render(pumpB, False, (240, 240, 240))
         self.__screen.blit(label, [530, 95])
+
         pygame.draw.rect(self.__screen, (240, 120, 0), [500, 130, 130, 30])
         heater = "Heater: "+("on " if self.__plant._effectors["heater"].isOn() else "off")
         label = self.__font.render(heater, False, (240, 240, 240))
         self.__screen.blit(label, [530, 135])
+
         pygame.draw.rect(self.__screen, (240, 120, 0), [500, 170, 130, 30])
         tap = "Tap: "+("on " if self.__tap else "off")
         label = self.__font.render(tap, False, (240, 240, 240))
         self.__screen.blit(label, [530, 175])
+
+        pygame.draw.rect(self.__screen, (240, 240, 0), [650, 10, 60, 30])
+        yellowLed = "Yled: "+("on " if self.__plant._effectors["Yled"].isOn() else "off")
+        label = self.__font.render(yellowLed, False, (0, 0, 0))
+        self.__screen.blit(label, [660, 15])
+
+        pygame.draw.rect(self.__screen, (0, 240, 0), [720, 10, 60, 30])
+        greenLed = "Gled: "+("on " if self.__plant._effectors["Gled"].isOn() else "off")
+        label = self.__font.render(greenLed, False, (0, 0, 0))
+        self.__screen.blit(label, [730, 15])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [650, 50, 130, 30])
+        cup = ("Remove " if self.__plant._vessels["mix"].getPresence() else "Insert ") +"Cup"
+        label = self.__font.render(cup, False, (240, 240, 240))
+        self.__screen.blit(label, [680, 55])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [650, 90, 130, 30])
+        empty = "Empty cup"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [680, 95])
+
+        #Keypad
+        #row 1
+        pygame.draw.rect(self.__screen, (240, 120, 0), [800, 10, 35, 30])
+        empty = "1"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [815, 15])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [840, 10, 35, 30])
+        empty = "2"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [855, 15])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [880, 10, 35, 30])
+        empty = "3"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [895, 15])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [920, 10, 35, 30])
+        empty = "A"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [935, 15])
+        #row 2
+        pygame.draw.rect(self.__screen, (240, 120, 0), [800, 45, 35, 30])
+        empty = "4"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [815, 50])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [840, 45, 35, 30])
+        empty = "5"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [855, 50])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [880, 45, 35, 30])
+        empty = "6"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [895, 50])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [920, 45, 35, 30])
+        empty = "B"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [935, 50])
+
+        #row 3
+        pygame.draw.rect(self.__screen, (240, 120, 0), [800, 80, 35, 30])
+        empty = "7"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [815, 85])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [840, 80, 35, 30])
+        empty = "8"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [855, 85])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [880, 80, 35, 30])
+        empty = "9"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [895, 85])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [920, 80, 35, 30])
+        empty = "C"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [935, 85])
+
+        #row 4
+        pygame.draw.rect(self.__screen, (240, 120, 0), [800, 115, 35, 30])
+        empty = "*"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [815, 120])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [840, 115, 35, 30])
+        empty = "0"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [855, 120])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [880, 115, 35, 30])
+        empty = "#"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [895, 120])
+
+        pygame.draw.rect(self.__screen, (240, 120, 0), [920, 115, 35, 30])
+        empty = "D"
+        label = self.__font.render(empty, False, (240, 240, 240))
+        self.__screen.blit(label, [935, 120])
+
+
 
     def drawGraphs(self) -> None:
         scale = 140 / 3.3
@@ -205,6 +316,52 @@ class GUI:
                             self.__plant._effectors["heater"].switchOff() if self.__plant._effectors["heater"].isOn() else self.__plant._effectors["heater"].switchOn()
                         elif 170 < pos[1] <= 200:
                             self.__tap = False if self.__tap else True
+                    elif 650 < pos[0] < 780:
+                        if 10 < pos[1] <= 40 and pos[0] < 710:
+                            self.__plant._effectors['Yled'].toggle()
+                        elif 10 < pos[1] <= 40 and pos[0] > 710:
+                            self.__plant._effectors['Gled'].toggle()
+                        elif 50 < pos[1] <= 80:
+                            self.__plant._vessels["mix"].toggle()
+                        elif 90 < pos[1] <= 120:
+                            self.__plant._vessels["mix"].empty()
+                    #keypad
+                    elif 800 < pos[0] <= 835:
+                        if 10 < pos[1] <= 40:
+                            self.__plant._sensors["keypad"].pressKey('1')
+                        elif 45 < pos[1] <= 75:
+                            self.__plant._sensors["keypad"].pressKey('4')
+                        elif 80 < pos[1] <= 115:
+                            self.__plant._sensors["keypad"].pressKey('7')
+                        elif 120 < pos[1] <= 155:
+                            self.__plant._sensors["keypad"].pressKey('*')
+                    elif 840 < pos[0] <= 885:
+                        if 10 < pos[1] <= 40:
+                            self.__plant._sensors["keypad"].pressKey('2')
+                        elif 45 < pos[1] <= 75:
+                            self.__plant._sensors["keypad"].pressKey('5')
+                        elif 80 < pos[1] <= 115:
+                            self.__plant._sensors["keypad"].pressKey('8')
+                        elif 120 < pos[1] <= 155:
+                            self.__plant._sensors["keypad"].pressKey('0')
+                    elif 890 < pos[0] <= 925:
+                        if 10 < pos[1] <= 40:
+                            self.__plant._sensors["keypad"].pressKey('3')
+                        elif 45 < pos[1] <= 75:
+                            self.__plant._sensors["keypad"].pressKey('6')
+                        elif 80 < pos[1] <= 115:
+                            self.__plant._sensors["keypad"].pressKey('9')
+                        elif 120 < pos[1] <= 155:
+                            self.__plant._sensors["keypad"].pressKey('#')
+                    elif 930 < pos[0] <= 965:
+                        if 10 < pos[1] <= 40:
+                            self.__plant._sensors["keypad"].pressKey('A')
+                        elif 45 < pos[1] <= 75:
+                            self.__plant._sensors["keypad"].pressKey('B')
+                        elif 80 < pos[1] <= 115:
+                            self.__plant._sensors["keypad"].pressKey('C')
+                        elif 120 < pos[1] <= 155:
+                            self.__plant._sensors["keypad"].pressKey('D')
 
             self.update()
             sleep(0.25)
