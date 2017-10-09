@@ -1,0 +1,27 @@
+#============================================================================
+#
+# makefile that includes the dependencies and defers to bmptk
+#
+# (c) Wouter van Ooijen (wouter@voti.nl) 2017
+#
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file LICENSE_1_0.txt or copy at 
+# http://www.boost.org/LICENSE_1_0.txt)   
+#
+#============================================================================
+
+# default relative path
+RELATIVE          ?= .
+
+# get the paths 
+HWLIB             := $(RELATIVE)
+include           $(HWLIB)/Makefile.find_local
+
+# add hwlib itself
+include           $(HWLIB)/Makefile.inc
+
+# add Catch
+SEARCH            += $(CATCH)/include
+
+# defer to the bmptk Makefile.inc
+include           $(BMPTK)/Makefile.inc

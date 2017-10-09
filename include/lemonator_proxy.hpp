@@ -12,7 +12,7 @@ private:
    bool log_transactions;
    bool log_characters;
    
-   void write( char c ){
+   void write_char( char c ){
       RS232_SendByte( p, c );	   
    }
    
@@ -41,7 +41,7 @@ public:
    
    void write( std::string s ){
       for( auto c : s ){
-         write( c );
+         write_char( c );
       }		 
       if( log_characters ){
 		  std::cout << "[" << s << "]\n" << std::flush;

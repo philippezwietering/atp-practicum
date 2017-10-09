@@ -14,7 +14,10 @@ PYBIND11_MODULE( lemonator, m ) {
       .value( "buffered", hwlib::buffering::buffered )
       .export_values();
 
-   py::class_< output_proxy >( m, "output_proxy" ) 
+   py::class_< output_proxy >( m, "output_proxy" )
+      .def_readwrite( "port", &output_proxy::port )
+      .def_readwrite( "s", &std::string )
+      .def( "output_proxy", &output_proxy::output_proxy, "", py::arg("port"), py::arg("s") ) 
       .def( "set", &output_proxy::set, "",
          py::arg("v"), py::arg("buffering") = hwlib::buffering::unbuffered );
    
@@ -43,11 +46,17 @@ PYBIND11_MODULE( lemonator, m ) {
       .def( "get", &sensor_proxy::get, "", py::arg("buf") = hwlib::buffering::unbuffered );
 
    py::class_< lcd_proxy >(m, "lcd_proxy")
+      .def_readwrite( "port", &lcd_proxy::port )
+      .def( "lcd_proxy", &lcd_proxy::lcd_proxy, "", py::arg("port") )
       .def( "putc", &lcd_proxy::putc, "", py::arg("c") );
 
    py::class_< serial_port>(m, "serial_port")
+      .def_readwrite( "p", &serial_port::p )
+      .def_readwrite( "log_transactions", &serial_port::log_transactions )
+      .def_readwrite( "log_characters", &serial_port::log_characters)
+      .def( "serial_port", &serial_port::serial_port, py::arg("p"), py::arg("log_transactions"), py::arg("log_characters") )
       .def( "read", &serial_port::read )
-      .def( "write", &serial_port::write, "", py::arg("s"))
+      .def( "write", &serial_port::write, "", py::arg("s") )
       .def( "clear", &serial_port::clear )
       .def( "transaction", &serial_port::transaction, "", py::arg("s"), py::arg("response") = true );
 }
