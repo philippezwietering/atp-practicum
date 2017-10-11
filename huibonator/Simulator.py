@@ -13,7 +13,6 @@ from Effector import *
 from Gui import GUI
 from Sensor import *
 from Controller import Controller
-from Simproxy import lemonator
 
 
 class Plant:
@@ -57,10 +56,9 @@ class Plant:
 
 class Simulator:
 
-    def __init__(self, gui: bool=False):
+    def __init__(self, gui: bool=False, controller):
         self._Simulator__plant = Plant()
-        self._Simulator__Proxy = lemonator(self._Simulator__plant.sensors, self._Simulator__plant_effectors)
-        self._Simulator__controller = Controller(self._Simulator__Proxy)
+        self._Simulator__controller = controller
         self._Simulator__monitor = Monitor(self._Simulator__plant._sensors, self._Simulator__plant._effectors)
         if gui:
             self._Simulator__gui = GUI(self._Simulator__plant, self._Simulator__controller, self._Simulator__monitor)

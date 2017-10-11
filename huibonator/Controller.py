@@ -14,31 +14,24 @@ from Simproxy import *
 
 class Controller:
 
-    def __init__(self, sensors: Dict[str, Sensor],
-                 effectors: Dict[str, Effector]):
-        """Controller is build using two Dictionaries:
-        - sensors: Dict[str, Sensor], using strings 'temp', 'color', 'level'
-        - effectors: Dict[str, Effector], using strings 'heater', 'pumpA', 'pumpB'
-        """
-        self._Controller__sensors = sensors
-        self._Controller__effectors = effectors
-        self.Yled = led_yellow()
-        self.testbool = True
+    def __init__(self, proxy: SimProxy):
+
+
 
     def update(self) -> None:
-        if not self._Controller__effectors['heater'].isOn():
-            if self._Controller__sensors['temp'].readValue() + tempReaction < tempSetPoint:
-                self._Controller__effectors['heater'].switchOn()
-        elif self._Controller__sensors['temp'].readValue() + tempReaction > tempSetPoint:
-            self._Controller__effectors['heater'].switchOff()
-        if self._Controller__sensors['level'].readValue() + levelReaction < levelSetPoint:
-            if self._Controller__sensors['color'].readValue() < colourSetPoint:
-                self._Controller__effectors['pumpB'].switchOn()
-            else:
-                self._Controller__effectors['pumpA'].switchOn()
-        elif self._Controller__sensors['level'].readValue() + levelReaction > levelSetPoint:
-            self._Controller__effectors['pumpA'].switchOff()
-            self._Controller__effectors['pumpB'].switchOff()
+        # if not self._Controller__effectors['heater'].isOn():
+        #     if self._Controller__sensors['temp'].readValue() + tempReaction < tempSetPoint:
+        #         self._Controller__effectors['heater'].switchOn()
+        # elif self._Controller__sensors['temp'].readValue() + tempReaction > tempSetPoint:
+        #     self._Controller__effectors['heater'].switchOff()
+        # if self._Controller__sensors['level'].readValue() + levelReaction < levelSetPoint:
+        #     if self._Controller__sensors['color'].readValue() < colourSetPoint:
+        #         self._Controller__effectors['pumpB'].switchOn()
+        #     else:
+        #         self._Controller__effectors['pumpA'].switchOn()
+        # elif self._Controller__sensors['level'].readValue() + levelReaction > levelSetPoint:
+        #     self._Controller__effectors['pumpA'].switchOff()
+        #     self._Controller__effectors['pumpB'].switchOff()
 
             if self.testbool:
                 self.Yled.set(1)
