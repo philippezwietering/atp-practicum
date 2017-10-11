@@ -5,14 +5,15 @@
 # Embedded file name: .\Simulator.py
 # Compiled at: 2017-08-30 16:00:41
 # Size of source mod 2**32: 3405 bytes
-from Controller import Controller
-from Vessel import Vessel, MixtureVessel
-from Sensor import *
-from Effector import *
-from Constants import *
-from Gui import GUI
-from typing import Dict
 import time
+from typing import Dict
+
+from Constants import *
+from Effector import *
+from Gui import GUI
+from Sensor import *
+from pc_python.Controller import Controller
+
 
 class Plant:
 
