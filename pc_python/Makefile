@@ -39,7 +39,7 @@ CFLAGS := \
 	-fPIC \
 	-flto \
 	-Wall \
-	-Os \
+	-Og \
 	-g3 \
 	$(addprefix -I, $(INCDIRS))
 

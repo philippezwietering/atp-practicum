@@ -39,10 +39,10 @@
 #define RS232_PORTNR  38
 
 
-int Cport[RS232_PORTNR],
+static int Cport[RS232_PORTNR],
     error;
 
-struct termios new_port_settings,
+static struct termios new_port_settings,
        old_port_settings[RS232_PORTNR];
 
 char *comports[RS232_PORTNR]={"/dev/ttyS0","/dev/ttyS1","/dev/ttyS2","/dev/ttyS3","/dev/ttyS4","/dev/ttyS5",

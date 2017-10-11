@@ -77,12 +77,12 @@ class GUI:
         self.__screen.blit(label, [530, 175])
 
         pygame.draw.rect(self.__screen, (240, 240, 0), [650, 10, 60, 30])
-        yellowLed = "Yled: "+("on " if self.__plant._effectors["Yled"].isOn() else "off")
+        yellowLed = "led_yellow: "+("on " if self.__plant._effectors["led_yellow"].isOn() else "off")
         label = self.__font.render(yellowLed, False, (0, 0, 0))
         self.__screen.blit(label, [660, 15])
 
         pygame.draw.rect(self.__screen, (0, 240, 0), [720, 10, 60, 30])
-        greenLed = "Gled: "+("on " if self.__plant._effectors["Gled"].isOn() else "off")
+        greenLed = "led_green: "+("on " if self.__plant._effectors["led_green"].isOn() else "off")
         label = self.__font.render(greenLed, False, (0, 0, 0))
         self.__screen.blit(label, [730, 15])
 
@@ -318,9 +318,9 @@ class GUI:
                             self.__tap = False if self.__tap else True
                     elif 650 < pos[0] < 780:
                         if 10 < pos[1] <= 40 and pos[0] < 710:
-                            self.__plant._effectors['Yled'].toggle()
+                            self.__plant._effectors['led_yellow'].toggle()
                         elif 10 < pos[1] <= 40 and pos[0] > 710:
-                            self.__plant._effectors['Gled'].toggle()
+                            self.__plant._effectors['led_green'].toggle()
                         elif 50 < pos[1] <= 80:
                             self.__plant._vessels["mix"].toggle()
                         elif 90 < pos[1] <= 120:
