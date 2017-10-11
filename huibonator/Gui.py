@@ -40,9 +40,11 @@ class GUI:
         self.step()
 
     def drawPipes(self) -> None:
-        pygame.draw.lines(self.__screen, (0, 0, 0), False,
+        pygame.draw.lines(self.__screen, (0, 0, 0) if self.__plant._effectors["pumpA"].isOn() else (240,240,240), False,
                           [(135, 55), (135, 35), (215, 35), (215, 140)], 5)
-        pygame.draw.lines(self.__screen, (0, 0, 0), False,
+
+
+        pygame.draw.lines(self.__screen, (0, 0, 0) if self.__plant._effectors["pumpB"].isOn() else (240,240,240), False,
                           [(235, 140), (235, 35), (315, 35), (315, 55)], 5)
 
     def drawButtons(self) -> None:
@@ -77,12 +79,12 @@ class GUI:
         self.__screen.blit(label, [530, 175])
 
         pygame.draw.rect(self.__screen, (240, 240, 0), [650, 10, 60, 30])
-        yellowLed = "led_yellow: "+("on " if self.__plant._effectors["led_yellow"].isOn() else "off")
+        yellowLed = "Yled: "+("on " if self.__plant._effectors["led_yellow"].isOn() else "off")
         label = self.__font.render(yellowLed, False, (0, 0, 0))
         self.__screen.blit(label, [660, 15])
 
         pygame.draw.rect(self.__screen, (0, 240, 0), [720, 10, 60, 30])
-        greenLed = "led_green: "+("on " if self.__plant._effectors["led_green"].isOn() else "off")
+        greenLed = "Gled: "+("on " if self.__plant._effectors["led_green"].isOn() else "off")
         label = self.__font.render(greenLed, False, (0, 0, 0))
         self.__screen.blit(label, [730, 15])
 
