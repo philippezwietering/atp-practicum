@@ -12,7 +12,6 @@ from Constants import *
 from Effector import *
 from Gui import GUI
 from Sensor import *
-from Controller import Controller
 
 
 class Plant:
@@ -56,8 +55,8 @@ class Plant:
 
 class Simulator:
 
-    def __init__(self, gui: bool=False, controller):
-        self._Simulator__plant = Plant()
+    def __init__(self, plant, controller, gui: bool=False):
+        self._Simulator__plant = plant
         self._Simulator__controller = controller
         self._Simulator__monitor = Monitor(self._Simulator__plant._sensors, self._Simulator__plant._effectors)
         if gui:

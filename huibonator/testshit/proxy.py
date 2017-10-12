@@ -1,11 +1,8 @@
-from sim import simulator
 
-class proxy(simulator):
+class proxy():
 
-    def __init__(self, controller):
-        simulator.__init__(self, controller)
-        self.controller.interface = self
-        self._led_yellow = led_yellow(self)
+    def __init__(self, plant):
+        self.plant = plant
 
 class led_yellow():
 

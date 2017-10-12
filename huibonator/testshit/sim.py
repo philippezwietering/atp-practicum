@@ -15,8 +15,8 @@ class plant:
 
 class simulator:
 
-    def __init__(self, controller):
-        self.plant = plant()
+    def __init__(self, plant, controller):
+        self.plant = plant
         self.controller = controller
 
     def run(self):

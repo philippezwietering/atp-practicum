@@ -82,6 +82,10 @@ class ReflexSeonsor(Sensor):
         self._value = self._vessel.getPresence()
 
 class keypadSensor(Sensor):
+
+    def __init__(self):
+        self._unitOfMeasure = 'ml'
+
     def __init__(self):
         self._value = 0
         self._read = ''

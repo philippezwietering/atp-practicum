@@ -10,12 +10,17 @@ from Sensor import Sensor, TemperatureSensor, LevelSensor, ColourSensor
 from Constants import *
 from typing import Dict
 from time import sleep
-from Simproxy import *
+from Simulator import Plant, Simulator
+import Simproxy
+
+plant = Plant()
+hw = Simproxy.lemonator(plant)
+led = hw.led_yellow
 
 class Controller:
 
-    def __init__(self, proxy: SimProxy):
-
+    def __init__(self):
+        self.bool = True
 
 
     def update(self) -> None:
@@ -33,7 +38,13 @@ class Controller:
         #     self._Controller__effectors['pumpA'].switchOff()
         #     self._Controller__effectors['pumpB'].switchOff()
 
-            if self.testbool:
-                self.Yled.set(1)
-            else:
-                self.Yled.set(0)
+        if self.bool:
+            led.set(0)
+            self.bool = False
+        else:
+            self.bool = True
+            led.set(1)
+
+
+sim = Simulator(plant, Controller(), True)
+sim.run()

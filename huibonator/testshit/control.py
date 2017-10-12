@@ -1,12 +1,20 @@
+from sim import Plant, Simulator
 import proxy
+
+myplant = Plant()
+lemonator = proxy.proxy(myplant)
+led = lemonator.led_yellow
+
 
 class controller:
 
     def update(self):
-        hw = self.interface
-        led = hw._led_yellow
 
         led.set(1)
+        delay(1000)
+        led.set(0)
 
-a = proxy.proxy(controller())
-a.run()
+
+sim = Simulator(True, myplant, controller())
+
+sim.run()
