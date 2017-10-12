@@ -15,7 +15,11 @@ import Simproxy
 
 plant = Plant()
 hw = Simproxy.lemonator(plant)
-led = hw.led_yellow
+yled = hw.led_yellow
+gled = hw.led_green
+heat = hw.heater
+wpump = hw.water_pump
+spump = hw.sirup_pump
 
 class Controller:
 
@@ -39,11 +43,19 @@ class Controller:
         #     self._Controller__effectors['pumpB'].switchOff()
 
         if self.bool:
-            led.set(0)
+            yled.set(0)
+            gled.set(0)
+            heat.set(0)
+            wpump.set(0)
+            spump.set(0)
             self.bool = False
         else:
+            yled.set(1)
+            gled.set(1)
+            heat.set(1)
+            wpump.set(1)
+            spump.set(1)
             self.bool = True
-            led.set(1)
 
 
 sim = Simulator(plant, Controller(), True)
