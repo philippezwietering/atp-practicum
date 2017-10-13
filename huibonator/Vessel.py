@@ -58,7 +58,7 @@ class MixtureVessel(Vessel):
     def __init__(self, amount=0, colour=0, temperature=20):
         Vessel.__init__(self, amount, colour, temperature)
         self._heat = False
-        self._isPresent = False
+        self._isPresent = True
 
     def heat(self, state=False):
         self._heat = state

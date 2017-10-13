@@ -84,6 +84,7 @@ class ReflexSeonsor(Sensor):
 class keypadSensor(Sensor):
 
     def __init__(self):
+        Sensor.__init__(self, None)
         self._unitOfMeasure = 'ml'
 
     def __init__(self):
