@@ -12,7 +12,6 @@ from Constants import *
 from Effector import *
 from Gui import GUI
 from Sensor import *
-from pc_python.Controller import Controller
 
 
 class Plant:
@@ -34,7 +33,8 @@ class Plant:
          'pumpB': Pump(self._vessels['b']),
          'valveB': Valve(self._vessels['b']),
          'led_yellow': Led(None),
-         'led_green': Led(None)}
+         'led_green': Led(None),
+         'LCD': LCD(None)}
 
     def update(self) -> None:
         for vessel in self._vessels.values():
@@ -56,9 +56,9 @@ class Plant:
 
 class Simulator:
 
-    def __init__(self, gui: bool=False):
-        self._Simulator__plant = Plant()
-        self._Simulator__controller = Controller(self._Simulator__plant._sensors, self._Simulator__plant._effectors)
+    def __init__(self, plant, controller, gui: bool=False):
+        self._Simulator__plant = plant
+        self._Simulator__controller = controller
         self._Simulator__monitor = Monitor(self._Simulator__plant._sensors, self._Simulator__plant._effectors)
         if gui:
             self._Simulator__gui = GUI(self._Simulator__plant, self._Simulator__controller, self._Simulator__monitor)

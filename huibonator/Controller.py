@@ -40,7 +40,6 @@ class Controller:
         #     self._Controller__effectors['pumpA'].switchOff()
         #     self._Controller__effectors['pumpB'].switchOff()
 
-
         #/print(afstand.read_mm())
         #print(reflex.get())
 
