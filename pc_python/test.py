@@ -3,7 +3,7 @@ import Controller
 import time
 
 print( "Python interface demo running" )
-hw = lemonator.lemonator( 2 )
+hw = lemonator.lemonator( 24 )
 contr = Controller.controller(hw)
 led = hw.led_yellow
 while 1:
