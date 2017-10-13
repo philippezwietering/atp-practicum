@@ -64,3 +64,8 @@ class Led(Effector):
             self.switchOff()
         else:
             self.switchOn()
+
+class LCD(Effector):
+
+    def put(self, char):
+        print(char, end='', flush=True)

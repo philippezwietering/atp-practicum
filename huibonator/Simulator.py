@@ -33,7 +33,8 @@ class Plant:
          'pumpB': Pump(self._vessels['b']),
          'valveB': Valve(self._vessels['b']),
          'led_yellow': Led(None),
-         'led_green': Led(None)}
+         'led_green': Led(None),
+         'LCD': LCD(None)}
 
     def update(self) -> None:
         for vessel in self._vessels.values():

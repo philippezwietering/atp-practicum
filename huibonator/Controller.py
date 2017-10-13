@@ -20,6 +20,9 @@ gled = hw.led_green
 heat = hw.heater
 wpump = hw.water_pump
 spump = hw.sirup_pump
+afstand = hw.distance
+reflex = hw.reflex
+lcd = hw.lcd
 
 class Controller:
 
@@ -56,6 +59,13 @@ class Controller:
             wpump.set(1)
             spump.set(1)
             self.bool = True
+
+        lcd.putc('a')
+        lcd.putc('b')
+
+        #/print(afstand.read_mm())
+        #print(reflex.get())
+
 
 
 sim = Simulator(plant, Controller(), True)
