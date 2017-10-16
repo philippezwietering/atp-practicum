@@ -134,6 +134,9 @@ class lemonatorsymtests(unittest.TestCase):
         mixves.empty()
         self.assertTrue(mixves.getFluidAmount() == 0)
 
+    def testPrintstate(self):
+        print("\ncheck if changes have not broken the printstate\n")
+        self.plant.printState()
     def testValve(self):
         print("\ntesting functionality of the valves")
         wpump = self.hw.water_pump
