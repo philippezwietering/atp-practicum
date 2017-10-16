@@ -42,22 +42,33 @@ class lemonatorsymtests(unittest.TestCase):
     def testPump(self):
         print("\ntesting pump functionality")
         pumpA = self.hw.water_pump
-        waterves = self.plant._vessels['a']
+        pumpB = self.hw.sirup_pump
+
+        #Directly inside the simulator for checking state
+        wpump = self.plant._effectors["pumpA"]
+        sipump = self.plant._effectors["pumpB"]
 
         # when the simulator is created the pump should be off
         # after that we turn the pump on and off
         # and check if it actually does this\n")
 
         #pump should be off
-        self.assertFalse(self.plant._effectors["pumpA"].isOn())
+        self.assertFalse(wpump.isOn())
+        self.assertFalse(sipump.isOn())
+
 
         #punp should be on
         pumpA.set(1)
-        self.assertTrue(self.plant._effectors["pumpA"].isOn())
+        pumpB.set(1)
+        self.assertTrue(wpump.isOn())
+        self.assertTrue(sipump.isOn())
 
         #pump should be off again
         pumpA.set(0)
-        self.assertFalse(self.plant._effectors["pumpA"].isOn())
+        pumpB.set(0)
+        self.assertFalse(wpump.isOn())
+        self.assertFalse(sipump.isOn())
+
 
 
     def testMixVesselPrecence(self):
@@ -119,36 +130,50 @@ class lemonatorsymtests(unittest.TestCase):
         #mixves fluid should have increased again
         self.assertTrue(mixves.getFluidAmount() > liqudmeasure)
 
+        #mixves should be empty
+        mixves.empty()
+        self.assertTrue(mixves.getFluidAmount() == 0)
 
     def testValve(self):
         print("\ntesting functionality of the valves")
         wpump = self.hw.water_pump
+        sipump = self.hw.sirup_pump
         wvalve = self.hw.water_valve
+        sivalve = self.hw.sirup_valve
 
         #direct approach of objects to check state
         extwvalve = self.plant._effectors['valveA']
+        extsivalve = self.plant._effectors['valveB']
         waterves = self.plant._vessels['a']
+        sirupves = self.plant._vessels['b']
 
         #valve should start as off
         #pump was tested in pump tested
         self.assertFalse(extwvalve.isOn())
+        self.assertFalse(extsivalve.isOn())
 
-        #watervalve should be on
+        #valves should be on
         wpump.set(1)
+        sipump.set(1)
         wvalve.set(1)
+        sivalve.set(1)
 
         self.assertTrue(extwvalve.isOn())
+        self.assertTrue(extsivalve.isOn())
 
         runsim(self.sim, 10)
 
         #turn off the pump and valve and allow for another
         #update so the air can "flow" out of the valve
         wpump.set(0)
+        sipump.set(0)
         runsim(self.sim, 1)
         wvalve.set(0)
+        sivalve.set(0)
 
-        #pressure shoud be zero in vessel
+        #pressure shoud be zero in vessels
         self.assertTrue(waterves._pressure == 0)
+        self.assertTrue(sirupves._pressure == 0)
 
 
 
@@ -189,19 +214,32 @@ class lemonatorsymtests(unittest.TestCase):
 
     def testled(self):
         led = self.hw.led_green
+        ledy = self.hw.led_yellow
 
         #external approach to check state of led
         exled = self.plant._effectors['led_green']
+        exledy = self.plant._effectors['led_yellow']
 
         #led should start off
         self.assertFalse(exled.isOn())
+        self.assertFalse(exledy.isOn())
 
         #led should be on
         led.set(1)
+        ledy.set(1)
         self.assertTrue(exled.isOn())
+        self.assertTrue(exledy.isOn())
 
         #led should be off again
         led.set(0)
+        ledy.set(0)
+        self.assertFalse(exled.isOn())
+        self.assertFalse(exledy.isOn())
+
+        #testing toggle function for Gui
+        exled.toggle()
+        self.assertTrue(exled.isOn())
+        exled.toggle()
         self.assertFalse(exled.isOn())
 
     def testKeyPad(self):
@@ -224,5 +262,36 @@ class lemonatorsymtests(unittest.TestCase):
         #when a wrong value is given keypad value should remain empty
         exkeypad.pressKey('U')
         self.assertTrue(keypad.getc() == '')
+
+    def testheater(self):
+        print("\nTesting heater")
+        heater = self.hw.heater
+
+        #external vessel to check temperature changes
+        exmixves = self.plant._vessels['mix']
+        exheater = self.plant._effectors['heater']
+
+        #heater should start in off state
+        self.assertFalse(exheater.isOn())
+
+        #heat value should start at 20
+        self.assertTrue(exmixves._temperature == 20)
+
+        #heater should be on
+        heater.set(1)
+        self.assertTrue(exheater.isOn())
+        runsim(self.sim, 10)
+
+        #heater should be off
+        heater.set(0)
+        self.assertFalse(exheater.isOn())
+
+        #temperature should have risen
+        rissentemp = exmixves._temperature
+        self.assertTrue(rissentemp > 20)
+
+        #temperature should decay with the heater off
+        runsim(self.sim, 100)
+        self.assertTrue(exmixves._temperature < rissentemp)
 
 unittest.main()

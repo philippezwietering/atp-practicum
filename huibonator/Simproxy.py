@@ -73,7 +73,7 @@ class sirup_valve(output):
 
     def set(self, c: bool):
         if c:
-            self.plant._effectors["valeB"].switchOn()
+            self.plant._effectors["valveB"].switchOn()
         else:
             self.plant._effectors["valveB"].switchOff()
 
