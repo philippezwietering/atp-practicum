@@ -20,6 +20,7 @@ class lemonator:
         self.distance = distance(plant)
         self.reflex = reflex(plant)
         self.lcd = lcd(plant)
+        self.keypad = keypad(plant)
 
 class output:
 
@@ -66,7 +67,7 @@ class water_valve(output):
         if c:
             self.plant._effectors["valveA"].switchOn()
         else:
-            self.plant._effectors["ValveA"].switchOff()
+            self.plant._effectors["valveA"].switchOff()
 
 class sirup_valve(output):
 
@@ -127,3 +128,8 @@ class reflex(sensor):
 
     def get(self):
         return int(self.plant._sensors["reflex"].readValue())
+
+class keypad(sensor):
+
+    def getc(self):
+        return(self.plant._sensors["keypad"]).getc()

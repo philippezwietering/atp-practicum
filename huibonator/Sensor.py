@@ -85,15 +85,16 @@ class keypadSensor(Sensor):
 
     def __init__(self):
         Sensor.__init__(self, None)
-        self._unitOfMeasure = 'ml'
-
-    def __init__(self):
+        self._unitOfMeasure = ''
         self._value = 0
         self._read = ''
 
     def pressKey(self, c):
+        if c not in [x for x in "0123456789ABCD*#"]:
+            return
         self._read = c
-        print(self._read)
 
-    def getKey(self):
-        return self._read
+    def getc(self):
+        retval = self._read
+        self._read = ''
+        return retval

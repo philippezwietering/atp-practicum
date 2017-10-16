@@ -14,11 +14,12 @@ class Vessel:
     - Mixture vessel (has a tap, attached with only heater effector, all types of sensors).
     """
 
-    def __init__(self, amount=3000, colour=0, temperature=20, flowTo=None):
+    def __init__(self, amount=liquidMax, colour=0, temperature=20, flowTo=None):
         self._amount = amount
         self._colour = colour
         self._temperature = temperature
         self._flowTo = flowTo
+        self._pressure = 0
 
     def getFluidAmount(self):
         return self._amount
@@ -47,8 +48,10 @@ class Vessel:
 
     def update(self):
         """Periodically called method to update the state of the vessel"""
-        pass
-
+        if self._pressure == 100:
+            self._pressure = 200
+        if self._pressure > 100:
+            self.flow()
 
 class MixtureVessel(Vessel):
     """ Mixture extensions to Vessel

@@ -28,24 +28,18 @@ class Effector:
 
 
 class Pump(Effector):
-
-    def __init__(self, vessel: Vessel):
-        Effector.__init__(self, vessel)
-        self._pressure = 0
-
     def update(self) -> None:
-        if self._pressure > 100 and self._vessel != None:
-            self._vessel.flow()
-        if self._value:
-            self._pressure = min(self._pressure + 100 / pressureRampUp, 100)
-            if self._pressure == 100:
-                self._pressure = 200
-        else:
-            self._pressure = max(self._pressure - 100 / pressureRampDown, 0)
+        if self._vessel != None:
+            if self._value:
+                self._vessel._pressure = min(self._vessel._pressure + 100 / pressureRampUp, 100)
+            else:
+                self._vessel._pressure = max(self._vessel._pressure - 100 / pressureRampDown, 0)
 
 
 class Valve(Effector):
-    pass
+    def update(self):
+        if self._value and self._vessel != None:
+            self._vessel._pressure = 0
 
 
 class Heater(Effector):
