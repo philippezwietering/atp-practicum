@@ -1,11 +1,13 @@
 import Controller
-import imp
+import sys
+sys.path.insert(0, '../huibonator/')
+
 import unittest
-from ../huibonator/Effector import Effector
-from ../huibonator/Sensor import Sensor, TemperatureSensor, LevelSensor, ColourSensor
-from ../huibonator/Constants import *
-from ../huibonator/Simulator import Plant, Simulator
-import ../huibonator/Simproxy
+import Effector
+import Sensor
+import Constants
+import Simulator
+import Simproxy
 
 class controllertests(unittest.TestCase):
 

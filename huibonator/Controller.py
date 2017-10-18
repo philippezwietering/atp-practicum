@@ -16,6 +16,7 @@ plant = Plant()
 hw = Simproxy.lemonator(plant)
 
 class Controller:
+    global plant
     def __init__(self, lemonator):
         self.lemonator = lemonator
         self.state = "Waiting"
@@ -35,6 +36,7 @@ class Controller:
         if self.state == "Pumping sirup":
             if not self.lemonator.reflex.get():
                 self.lemonator.sirup_valve.set(1)
+                print(plant._effectors['valveB'].isOn())
                 self.lemonator.sirup_pump.set(0)
                 self.state = "Waiting"
                 for x in "Waiting\n":
