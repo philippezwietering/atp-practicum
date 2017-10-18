@@ -7,7 +7,12 @@
 namespace py = pybind11
 
 int main void(){
-    py::scoped_interperter python;
 
-    auto simproxy = py::module::import("Simproxy")
+    Py_Initialize():
+    wchar_t wstr[32];
+    wchar_t* args = {wstr};
+    std::mbstowcs(wstr, "lemonator", 9);
+    PySys_SetArgv(1, &args);
+
+    auto simProxy = py::module::import("Simproxy")
 }
