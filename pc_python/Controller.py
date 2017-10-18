@@ -1,4 +1,4 @@
-import lemonator
+import ../huibonator/Simproxy
 from time import sleep
 
 class controller:
@@ -15,22 +15,18 @@ class controller:
             for x in "Pumping syrup\n":
                 self.self.lemonator.lcd.putc(x)
 
-            while(1):
-                if self.lemonator.distance.read_mm() < 110 or not self.lemonator.reflex.get():
-                    self.lemonator.sirup_pump.set(0)
-                    self.lemonator.sirup_valve.set(1)
-                    break
+        if self.lemonator.distance.read_mm() < 110 or not self.lemonator.reflex.get():
+            self.lemonator.sirup_pump.set(0)
+            self.lemonator.sirup_valve.set(1)
 
-            self.lemonator.water_valve.set(0)
-            self.lemonator.water_pump.set(1)
-            for x in "Pumping water\n":
-                self.lemonator.lcd.putc(x)
+        self.lemonator.water_valve.set(0)
+        self.lemonator.water_pump.set(1)
+        for x in "Pumping water\n":
+            self.lemonator.lcd.putc(x)
 
-            while(1):
-                if self.lemonator.distance.read_mm() < 90 or not self.lemonator.reflex.get():
-                    self.lemonator.water_pump.set(0)
-                    self.lemonator.water_valve.set(1)
-                    break
+        if self.lemonator.distance.read_mm() < 90 or not self.lemonator.reflex.get():
+            self.lemonator.water_pump.set(0)
+            self.lemonator.water_valve.set(1)
 
-            for x in "Finished!\n":
-                self.lemonator.lcd.putc(x)
+        for x in "Finished!\n":
+            self.lemonator.lcd.putc(x)

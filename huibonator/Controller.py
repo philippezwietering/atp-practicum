@@ -14,37 +14,40 @@ import Simproxy
 
 plant = Plant()
 hw = Simproxy.lemonator(plant)
-yled = hw.led_yellow
-gled = hw.led_green
-heat = hw.heater
-wpump = hw.water_pump
-spump = hw.sirup_pump
-afstand = hw.distance
-reflex = hw.reflex
-lcd = hw.lcd
 
 class Controller:
+    def __init__(self, lemonator):
+        self.lemonator = lemonator
+        self.state = "Waiting"
+        sleep(5)
+        for x in "Hello\n":
+            self.lemonator.lcd.putc(x)
 
-    def update(self) -> None:
-        # if not self._Controller__effectors['heater'].isOn():
-        #     if self._Controller__sensors['temp'].readValue() + tempReaction < tempSetPoint:
-        #         self._Controller__effectors['heater'].switchOn()
-        # elif self._Controller__sensors['temp'].readValue() + tempReaction > tempSetPoint:
-        #     self._Controller__effectors['heater'].switchOff()
-        # if self._Controller__sensors['level'].readValue() + levelReaction < levelSetPoint:
-        #     if self._Controller__sensors['color'].readValue() < colourSetPoint:
-        #         self._Controller__effectors['pumpB'].switchOn()
-        #     else:
-        #         self._Controller__effectors['pumpA'].switchOn()
-        # elif self._Controller__sensors['level'].readValue() + levelReaction > levelSetPoint:
-        #     self._Controller__effectors['pumpA'].switchOff()
-        #     self._Controller__effectors['pumpB'].switchOff()
+    def update(self):
+        if ("A" == self.lemonator.keypad.getc()) and (self.lemonator.reflex.get()):
+            self.lemonator.sirup_valve.set(0)
+            self.lemonator.sirup_pump.set(1)
+            self.state = "Pumping"
+            for x in "Pumping syrup\n":
+                self.lemonator.lcd.putc(x)
 
-        #/print(afstand.read_mm())
-        #print(reflex.get())
-        pass
+        if self.lemonator.distance.read_mm() < 80 or not self.lemonator.reflex.get() and self.state == "Pumping":
+            self.lemonator.sirup_pump.set(0)
+            self.lemonator.sirup_valve.set(1)
+            self.lemonator.water_valve.set(0)
+            self.lemonator.water_pump.set(1)
+            for x in "Pumping water\n":
+                self.lemonator.lcd.putc(x)
+
+        if self.lemonator.distance.read_mm() < 44 or not self.lemonator.reflex.get() and self.state == "Pumping":
+            self.lemonator.water_pump.set(0)
+            self.lemonator.water_valve.set(1)
+            self.state == "Waiting"
+
+        for x in "Finished!\n":
+            self.lemonator.lcd.putc(x)
 
 
 
-sim = Simulator(plant, Controller(), True)
+sim = Simulator(plant, Controller(hw), True)
 sim.run()
