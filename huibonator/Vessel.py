@@ -50,7 +50,7 @@ class Vessel:
 
     def update(self):
         """Periodically called method to update the state of the vessel"""
-        if self._pressure == 100 and self._puping:
+        if self._pressure == 100 and self._pumping:
             self._pressure = 200
         if self._pressure > 100:
             self.flow()
