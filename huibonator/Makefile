@@ -2,8 +2,8 @@
 # By using this you surrender your firstborn child to the blood god.
 # All other rights reserved.
 
-NAME := lemonator
-BIN  := $(NAME)$(shell python3-config --extension-suffix)
+NAME := test
+BIN  := $(NAME)
 
 CXX  := g++
 CC   := gcc
@@ -43,7 +43,7 @@ CFLAGS := \
 	-g3 \
 	$(addprefix -I, $(INCDIRS))
 
-LDFLAGS  := -Os -flto -fPIC -shared
+LDFLAGS  := -Os -flto -fPIC
 
 CFILES   := $(EXTERNALS)/RS-232/rs232.c
 CXXFILES := $(shell find -type f -name '*.cpp')
@@ -55,7 +55,7 @@ all: $(BIN)
 $(BIN): $(OFILES) hwlib.o
 	$(CXX) -o $@ $(LDFLAGS) $^
 
-hwlib.o: $(EXTERNALS)/hwlib/library/hwlib.cpp Makefile
+hwlib.o: $(EXTERNALS)/hwlib/library/hwlib.cpp
 	$(CXX) -o $@ $(CXXFLAGS) -c $<
 
 %.o: %.c Makefile
@@ -65,4 +65,4 @@ hwlib.o: $(EXTERNALS)/hwlib/library/hwlib.cpp Makefile
 	$(CXX) -o $@ $(CXXFLAGS) -c $<
 
 clean:
-	rm -f $(OFILES) $(BIN) hwlib.o
+	rm -f $(OFILES) $(BIN) hwlib.o cppcontroller
