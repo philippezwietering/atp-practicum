@@ -107,7 +107,7 @@ class distance(sensor):
         def magicalconversion(OldValue, OldMin, OldMax, NewMin, NewMax):
             return (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
 
-        return int(magicalconversion(self.plant._sensors["level"]._convertToValue(), 0, 2000, sensorMin, sensorMax))
+        return int(magicalconversion(self.plant._sensors["level"]._convertToValue(), 0, liquidMax, sensorMin, sensorMax))
 
 class reflex(sensor):
 

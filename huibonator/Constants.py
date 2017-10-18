@@ -1,6 +1,6 @@
 
 """Constants for physical simulation"""
-flowRate = 1            # the amount of water flowing (in ml) from the mixture vessel per second when tap is open
+flowRate = 20            # the amount of water flowing (in ml) from the mixture vessel per second when tap is open
 heatRate = 1            # the amount of heat increase (in degrees celsius) in mixture vessel when heater is on
 temperatureDecay = 0.1    # amount of temperature loss (in degrees celsius) in mixture vessel when heater is off
 
@@ -9,6 +9,7 @@ pressureRampDown = 20   # amount of time before liquid stops flowing after the a
 
 liquidMax = 2000        # amount (in ml) of liquid that can maximally go into the containers (pi * 10 * 10 * 6.5; diameter 10cm, height ~6.5cm)
 environmentTemp = 20    # environmentalTemperature
+storageMax = 20000      # Max for a storage vessel.
 
 tempConversion = 0.05   # 0.00V = 0.0 degrees celsius; steps of 0.05V per degree celsius above 0
 levelConversion = 0.5       # V/cm; 0V is empty
