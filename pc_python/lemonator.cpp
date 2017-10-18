@@ -8,7 +8,7 @@
 namespace py = pybind11;
 
 PYBIND11_MODULE( lemonator, m ) {
-	
+
    py::enum_< hwlib::buffering >( m, "buffering")
       .value( "unbuffered", hwlib::buffering::unbuffered )
       .value( "buffered", hwlib::buffering::buffered )
@@ -18,7 +18,7 @@ PYBIND11_MODULE( lemonator, m ) {
       .def( py::init< serial_port&, std::string >() )
       .def( "set", &output_proxy::set, "",
          py::arg("v"), py::arg("buffering") = hwlib::buffering::unbuffered );
-   
+
    py::class_< lemonator_proxy >( m, "lemonator" )
       .def( py::init< int >() )
       .def_readonly( "led_yellow", &lemonator_proxy::p_led_yellow )
@@ -55,4 +55,3 @@ PYBIND11_MODULE( lemonator, m ) {
       .def( "clear", &serial_port::clear )
       .def( "transaction", &serial_port::transaction, "", py::arg("s"), py::arg("response") = true );
 }
-
