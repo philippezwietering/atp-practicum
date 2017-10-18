@@ -23,3 +23,7 @@ tempSetPoint = 2.0 # degrees celsius
 tempReaction = 0.05
 levelReaction = 0.07
 colourReaction = 0.05
+
+"""Levelsensor min and max. Min is emptu cup max is full cup"""
+sensorMin = 95
+sensorMax = 34
