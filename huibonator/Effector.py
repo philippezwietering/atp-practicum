@@ -32,8 +32,10 @@ class Pump(Effector):
         if self._vessel != None:
             if self._value:
                 self._vessel._pressure = min(self._vessel._pressure + 100 / pressureRampUp, 100)
+                self._vessel._pumping = True
             else:
                 self._vessel._pressure = max(self._vessel._pressure - 100 / pressureRampDown, 0)
+                self._vessel._pumping = False
 
 
 class Valve(Effector):

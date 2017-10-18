@@ -45,6 +45,5 @@ class Controller:
         pass
 
 
-
 sim = Simulator(plant, Controller(), True)
 sim.run()

@@ -5,7 +5,7 @@ heatRate = 1            # the amount of heat increase (in degrees celsius) in mi
 temperatureDecay = 0.1    # amount of temperature loss (in degrees celsius) in mixture vessel when heater is off
 
 pressureRampUp = 3      # amount of seconds to build up enough pressure to make liquid flow from storage vessels
-pressureRampDown = 20   # amount of time before liquid stops flowing after the air pump has been switched off
+pressureRampDown = 3   # amount of time before liquid stops flowing after the air pump has been switched off
 
 liquidMax = 2000        # amount (in ml) of liquid that can maximally go into the containers (pi * 10 * 10 * 6.5; diameter 10cm, height ~6.5cm)
 environmentTemp = 20    # environmentalTemperature
