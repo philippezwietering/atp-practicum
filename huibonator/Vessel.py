@@ -14,7 +14,7 @@ class Vessel:
     - Mixture vessel (has a tap, attached with only heater effector, all types of sensors).
     """
 
-    def __init__(self, amount=liquidMax, colour=0, temperature=20, flowTo=None):
+    def __init__(self, amount=storageMax, colour=0, temperature=20, flowTo=None):
         self._amount = amount
         self._colour = colour
         self._temperature = temperature
@@ -44,7 +44,7 @@ class Vessel:
         if self._isPresent:
             if self._amount + amount > liquidMax:
                 print('ERROR', 'overflow occuring in', type(self))
-            else:
+            elif amount > 0:
                 self._colour = (self._colour * self._amount + colour * amount) / (self._amount + amount)
                 self._amount += amount
 

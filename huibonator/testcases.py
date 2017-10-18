@@ -103,8 +103,8 @@ class lemonatorsymtests(unittest.TestCase):
         self.assertTrue(mixves.getFluidAmount() == 0)
 
         #both suply vessels should be filled up
-        self.assertTrue(waterves.getFluidAmount() == liquidMax)
-        self.assertTrue(sirupves.getFluidAmount() == liquidMax)
+        self.assertTrue(waterves.getFluidAmount() == storageMax)
+        self.assertTrue(sirupves.getFluidAmount() == storageMax)
 
         #Pumping fluid from the watervessel to the mixves
         wpump.set(1)
@@ -112,7 +112,7 @@ class lemonatorsymtests(unittest.TestCase):
         wpump.set(0)
 
         #wartervessel should have less fluid
-        self.assertTrue(waterves.getFluidAmount() < liquidMax)
+        self.assertTrue(waterves.getFluidAmount() < storageMax)
 
         #mixves should have more liqid now
         #liquid amount is kept for future measurement
@@ -125,7 +125,7 @@ class lemonatorsymtests(unittest.TestCase):
         spump.set(0)
 
         #syrupvessel should have less liquid
-        self.assertTrue(sirupves.getFluidAmount() < liquidMax)
+        self.assertTrue(sirupves.getFluidAmount() < storageMax)
 
         #mixves fluid should have increased again
         self.assertTrue(mixves.getFluidAmount() > liqudmeasure)

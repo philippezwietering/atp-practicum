@@ -18,8 +18,8 @@ class Plant:
 
     def __init__(self):
         self._vessels = {'mix': MixtureVessel(amount=0, temperature=20, colour=0)}
-        self._vessels['a'] = Vessel(colour=0, amount=liquidMax, flowTo=self._vessels['mix'])
-        self._vessels['b'] = Vessel(colour=100, amount=liquidMax, flowTo=self._vessels['mix'])
+        self._vessels['a'] = Vessel(colour=0, amount=storageMax, flowTo=self._vessels['mix'])
+        self._vessels['b'] = Vessel(colour=100, amount=storageMax, flowTo=self._vessels['mix'])
         self._sensors = {
          'color': ColourSensor(self._vessels['mix']),
          'temp': TemperatureSensor(self._vessels['mix']),
