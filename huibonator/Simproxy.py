@@ -95,21 +95,6 @@ class sensor:
     def __init__(self, plant):
         self.plant = plant
 
-    def read_mc(self):
-        pass
-
-    def read_mm(self):
-        pass
-
-    def read_rgb(self):
-        pass
-
-    def getc(self):
-        pass
-
-    def get(self):
-        pass
-
 class colour(sensor):
 
     def read_rgb(self):

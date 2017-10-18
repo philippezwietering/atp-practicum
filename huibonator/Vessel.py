@@ -40,11 +40,12 @@ class Vessel:
             self._flowTo.flowIn(amount, self._colour)
 
     def flowIn(self, amount, colour):
-        if self._amount + amount > liquidMax:
-            print('ERROR', 'overflow occuring in', type(self))
-        else:
-            self._colour = (self._colour * self._amount + colour * amount) / (self._amount + amount)
-            self._amount += amount
+        if self._isPresent:
+            if self._amount + amount > liquidMax:
+                print('ERROR', 'overflow occuring in', type(self))
+            else:
+                self._colour = (self._colour * self._amount + colour * amount) / (self._amount + amount)
+                self._amount += amount
 
     def update(self):
         """Periodically called method to update the state of the vessel"""
