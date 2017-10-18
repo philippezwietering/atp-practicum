@@ -44,7 +44,7 @@ class Vessel:
         if self._isPresent:
             if self._amount + amount > liquidMax:
                 print('ERROR', 'overflow occuring in', type(self))
-            else:
+            elif amount > 0:
                 self._colour = (self._colour * self._amount + colour * amount) / (self._amount + amount)
                 self._amount += amount
 
