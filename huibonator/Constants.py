@@ -1,6 +1,6 @@
 
 """Constants for physical simulation"""
-flowRate = 1            # the amount of water flowing (in ml) from the mixture vessel per second when tap is open
+flowRate = 50            # the amount of water flowing (in ml) from the mixture vessel per second when tap is open
 heatRate = 1            # the amount of heat increase (in degrees celsius) in mixture vessel when heater is on
 temperatureDecay = 0.1    # amount of temperature loss (in degrees celsius) in mixture vessel when heater is off
 
@@ -24,6 +24,6 @@ tempReaction = 0.05
 levelReaction = 0.07
 colourReaction = 0.05
 
-"""Levelsensor min and max. Min is emptu cup max is full cup"""
+"""Levelsensor min and max. Min is empty cup max is full cup"""
 sensorMin = 95
 sensorMax = 34
