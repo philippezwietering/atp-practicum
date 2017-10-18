@@ -388,7 +388,10 @@ class VesselIcon(Icon):
 
     def draw(self) -> None:
         color = self._vessel.getColour()
-        level = self._vessel.getFluidAmount() / liquidMax * 100
+        if str(type(self._vessel)) == "<class 'Vessel.MixtureVessel'>":
+            level = self._vessel.getFluidAmount() / liquidMax * 100
+        else:
+            level = self._vessel.getFluidAmount() / storageMax * 100
 
         pygame.draw.rect(self._screen, (color*2.55, 0, 255-color*2.55), [self._x, self._y+51-(level*0.4), 50, level*0.4])
         pygame.draw.lines(self._screen, (0, 0, 0), False, [(self._x, self._y), (self._x, self._y+50), (self._x+50, self._y+50), (self._x+50, self._y)],2)
