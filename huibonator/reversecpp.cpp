@@ -23,17 +23,15 @@ int main(void){
     py::object plant  = Plant();
     py::object adapter = simProxyModule(plant);
 
-    auto led_yellow = adapter.attr("led_yellow");
+    adapter.attr("led_yellow").attr("set")(1);
 
-    led_yellow.attr("set")(1);
+    auto dong = py::dict(plant.attr("_effectors"));
 
-    auto dong = py::dict(plant.attr("_vessels"));
+    py::print(dong["led_yellow"].attr("isOn")());
 
-    auto obj = dong["a"];
+    adapter.attr("led_yellow").attr("set")(0);
 
-    py::print(obj.attr("_pumping"));
+    py::print(dong["led_yellow"].attr("isOn")());
 
     //std::cout << dong << std::endl;
-
-
 }
