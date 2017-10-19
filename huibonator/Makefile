@@ -4,6 +4,8 @@
 
 NAME := test
 BIN  := $(NAME)
+PYTHON_LIBRARY := -L/usr/bin/ \
+					-lpython3.5m
 
 CXX  := g++
 CC   := gcc
@@ -22,8 +24,8 @@ CXXFLAGS := \
 	-Wall \
 	-Og \
 	-g3 \
-	-DBMPTK_TARGET=pyd \
-	-DBMPTK_TARGET_pyd \
+	-DBMPTK_TARGET=native \
+	-DBMPTK_TARGET_native \
 	-DBMPTK_CHIP=Linux_Native \
 	-DBMPTK_CHIP_Linux_Native \
 	-DBMPTK_XTAL= \
@@ -43,7 +45,7 @@ CFLAGS := \
 	-g3 \
 	$(addprefix -I, $(INCDIRS))
 
-LDFLAGS  := -Os -flto -fPIC
+LDFLAGS  := -Os -flto -fPIC $(PYTHON_LIBRARY)
 
 CFILES   := $(EXTERNALS)/RS-232/rs232.c
 CXXFILES := $(shell find -type f -name '*.cpp')
@@ -53,9 +55,9 @@ OFILES   := $(CFILES:%.c=%.o) $(CXXFILES:%.cpp=%.o)
 all: $(BIN)
 
 $(BIN): $(OFILES) hwlib.o
-	$(CXX) -o $@ $(LDFLAGS) $^
+	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) $^
 
-hwlib.o: $(EXTERNALS)/hwlib/library/hwlib.cpp
+hwlib.o: $(EXTERNALS)/hwlib/library/hwlib.cpp Makefile
 	$(CXX) -o $@ $(CXXFLAGS) -c $<
 
 %.o: %.c Makefile
@@ -65,4 +67,4 @@ hwlib.o: $(EXTERNALS)/hwlib/library/hwlib.cpp
 	$(CXX) -o $@ $(CXXFLAGS) -c $<
 
 clean:
-	rm -f $(OFILES) $(BIN) hwlib.o cppcontroller
+	rm -f $(OFILES) $(BIN) hwlib.o test
