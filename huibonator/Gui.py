@@ -294,7 +294,7 @@ class GUI:
         if self.__tap:
             self.__plant._vessels["mix"].flow()
 
-    def run(self) -> None:
+    def run(self, switch = False) -> None:
         while True:
             if self.__run:
                 self.step()
@@ -367,6 +367,9 @@ class GUI:
 
             self.update()
             sleep(0.25)
+            if switch:
+                break
+
 
 
 class Icon:

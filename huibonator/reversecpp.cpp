@@ -61,7 +61,14 @@ int main(void){
     py::object adapter = simProxyModule(plant);
     py::object sim = Simulator(plant, Controller, true);
 
+    //sim.attr("_Simulator__gui").attr("__run") = true;
 
+    while(true){
+        sim.attr("_Simulator__gui").attr("run")(true);
+        adapter.attr("led_yellow").attr("set")(1);
+        sim.attr("_Simulator__gui").attr("run")(true);
+        adapter.attr("led_yellow").attr("set")(0);
+    }
     // while(true){
     //
     //     sim.attr("run")(false);
