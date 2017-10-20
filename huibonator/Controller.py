@@ -44,6 +44,5 @@ class Controller:
         #print(reflex.get())
         pass
 
-
-sim = Simulator(plant, Controller(), True)
-sim.run()
+#sim = Simulator(plant, Controller(), True)
+#sim.run()

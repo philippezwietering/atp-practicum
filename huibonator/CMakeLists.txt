@@ -18,6 +18,6 @@ set(CMAKE_C_FLAGS "-fdata-sections -ffunction-sections -DBMPTK_TARGET_native")
 set(CMAKE_CXX_FLAGS "-fdata-sections -ffunction-sections -DBMPTK_TARGET_native -std=c++14")
 
 add_executable(lemonator-program reversecpp.cpp ${LIBRARY_SOURCES})
-target_link_libraries(lemonator-program ${PYTHON3_LIBRARIES})
+target_link_libraries(lemonator-program ${PYTHON3_LIBRARIES} "-lpthread")
 target_include_directories(lemonator-program PUBLIC ${PYTHON3_INCLUDE_DIRS})
 target_compile_options(lemonator-program PUBLIC ${PYTHON3_CFLAGS_OTHER})
