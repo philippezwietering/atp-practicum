@@ -366,7 +366,7 @@ class GUI:
                             self.__plant._sensors["keypad"].pressKey('D')
 
             self.update()
-            sleep(0.25)
+            sleep(0.10)
             if switch:
                 break
 
