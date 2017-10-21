@@ -12,14 +12,14 @@
 namespace py = pybind11;
 
 class Setter{
-    std::string &s;
+    std::string s;
     py::object proxy;
 
 public:
 
     Setter(){}
 
-    Setter(std::string &s, py::object proxy): s(s), proxy(proxy){}
+    Setter(std::string s, py::object proxy): s(s), proxy(proxy){}
 
     void set(bool c){
         if(c){
@@ -31,13 +31,13 @@ public:
 };
 
 class Getter{
-    std::string &s;
+    std::string s;
     py::object proxy;
 
 public:
     Getter(){}
 
-    Getter(std::string &s, py::object proxy): s(s), proxy(proxy){}
+    Getter(std::string s, py::object proxy): s(s), proxy(proxy){}
 
     int read_mm(){
         return proxy.attr(s.c_str()).attr("read_mm")().cast<int>();
@@ -57,13 +57,13 @@ public:
 };
 
 class LCDScreen{
-    std::string &s;
+    std::string s;
     py::object proxy;
 
 public:
-    LCDScreen();
+    LCDScreen(){}
 
-    LCDScreen(std::string &s, py::object proxy): s(s), proxy(proxy){}
+    LCDScreen(std::string s, py::object proxy): s(s), proxy(proxy){}
 
     void putc(char c){
         proxy.attr(s.c_str()).attr("putc")(c);
@@ -71,13 +71,13 @@ public:
 };
 
 class SerialPort{
-    std::string &s;
+    std::string s;
     py::object proxy;
 
 public:
-    SerialPort();
+    SerialPort(){}
 
-    SerialPort(std::string &s, py::object proxy): s(s), proxy(proxy){}
+    SerialPort(std::string s, py::object proxy): s(s), proxy(proxy){}
 
     char read(){
         proxy.attr(s.c_str()).attr("read")().cast<char>();
@@ -101,7 +101,7 @@ class cppAdapter{
     py::object proxyMod;
     py::object proxy;
 
-    public:
+public:
 
     Setter led_yellow;
     Setter led_green;
