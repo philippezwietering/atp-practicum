@@ -112,7 +112,7 @@ class distance(sensor):
 class reflex(sensor):
 
     def get(self):
-        return int(self.plant._sensors["reflex"].readValue())
+        return bool(self.plant._sensors["reflex"].readValue())
 
 class keypad(sensor):
 

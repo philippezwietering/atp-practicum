@@ -11,8 +11,6 @@
 
 namespace py = pybind11;
 
-//py::object bufferingModule = py::module::import("buffering").attr("buffering");
-
 class Setter{
     std::string s;
     py::object proxy;
@@ -53,8 +51,8 @@ public:
         return proxy.attr(s.c_str()).attr("getc")().cast<char>();
     }
 
-    bool get(hwlib::buffering buf = hwlib::buffering::unbuffered){
-        return proxy.attr(s.c_str()).attr("get")(py::cast(buf)).cast<bool>();//Hij pakt deze cast niet en hij laadt de module bovenaan niet
+    bool get(){
+        return proxy.attr(s.c_str()).attr("get")().cast<bool>();
     }
 };
 
