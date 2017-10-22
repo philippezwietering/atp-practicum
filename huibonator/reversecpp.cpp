@@ -18,32 +18,39 @@ public:
     MyController(cppAdapter &adapt): hw(adapt){} //LCD doesn't work, otherwise we would say hello here
 
     void update(void){
-        if(/* hw.keypad.getc() == 'A' &&*/ hw.reflex.get()){
-            //Again, sadly can't talk to you. Come to think of it, we are just like WALL-E
-            hw.sirup_valve.set(0);
-            hw.sirup_pump.set(1);
-
-            while(1){
-                if(hw.distance.read_mm() < 110 || !hw.reflex.get()){
-                    hw.sirup_valve.set(1);
-                    hw.sirup_pump.set(0);
-                    break; //Pull on the brakes!
-                }
-            }
-
-            //How great it would be if we could say we are gonna do the water now
-            hw.water_valve.set(0);
-            hw.water_pump.set(1);
-
-            while(1){
-                if(hw.distance.read_mm() < 90 || !hw.reflex.get()){
-                    hw.water_valve.set(1);
-                    hw.sirup_pump.set(0);
-                    break;
-                }
-            }
-            //And we are done!
+        if (hw.reflex.get()){
+            hw.led_green.set(1);
+            hw.led_yellow.set(0);
+        } else {
+            hw.led_green.set(0);
+            hw.led_yellow.set(1);
         }
+    //     if(/* hw.keypad.getc() == 'A' &&*/ hw.reflex.get()){
+    //         //Again, sadly can't talk to you. Come to think of it, we are just like WALL-E
+    //         hw.sirup_valve.set(0);
+    //         hw.sirup_pump.set(1);
+    //
+    //         while(1){
+    //             if(hw.distance.read_mm() < 110 || !hw.reflex.get()){
+    //                 hw.sirup_valve.set(1);
+    //                 hw.sirup_pump.set(0);
+    //                 break; //Pull on the brakes!
+    //             }
+    //         }
+    //
+    //         //How great it would be if we could say we are gonna do the water now
+    //         hw.water_valve.set(0);
+    //         hw.water_pump.set(1);
+    //
+    //         while(1){
+    //             if(hw.distance.read_mm() < 90 || !hw.reflex.get()){
+    //                 hw.water_valve.set(1);
+    //                 hw.sirup_pump.set(0);
+    //                 break;
+    //             }
+    //         }
+    //         //And we are done!
+    //     }
     }
 
 };
@@ -79,8 +86,8 @@ int main(void){
     //sim.attr("_Simulator__gui").attr("__run") = true;
 
     while(true){
-        dinga.update();
         sim.attr("_Simulator__gui").attr("run")(true);
+        dinga.update();
         //py::print(plant.attr("_effectors")["led_yellow"].attr("isOn")());
         // adapter.attr("led_yellow").attr("set")(1);
         // sim.attr("_Simulator__gui").attr("run")(true);

@@ -70,31 +70,31 @@ public:
 //     }
 // };
 
-class SerialPort{
-    std::string s;
-    py::object proxy;
-
-public:
-    SerialPort(){}
-
-    SerialPort(std::string s, py::object proxy): s(s), proxy(proxy){}
-
-    char read(){
-        proxy.attr(s.c_str()).attr("read")().cast<char>();
-    }
-
-    void write(std::string & text){
-        proxy.attr(s.c_str()).attr("write")(py::cast(text));
-    }
-
-    void clear(){
-        proxy.attr(s.c_str()).attr("clear")();
-    }
-
-    std::string transaction(std::string &text, bool response = true){
-        proxy.attr(s.c_str()).attr("transaction")(py::cast(text), py::cast(response)).cast<std::string>();
-    }
-};
+// class SerialPort{
+//     std::string s;
+//     py::object proxy;
+//
+// public:
+//     SerialPort(){}
+//
+//     SerialPort(std::string s, py::object proxy): s(s), proxy(proxy){}
+//
+//     char read(){
+//         proxy.attr(s.c_str()).attr("read")().cast<char>();
+//     }
+//
+//     void write(std::string & text){
+//         proxy.attr(s.c_str()).attr("write")(py::cast(text));
+//     }
+//
+//     void clear(){
+//         proxy.attr(s.c_str()).attr("clear")();
+//     }
+//
+//     std::string transaction(std::string &text, bool response = true){
+//         proxy.attr(s.c_str()).attr("transaction")(py::cast(text), py::cast(response)).cast<std::string>();
+//     }
+// };
 
 class cppAdapter{
     py::object &plantMod;
@@ -110,12 +110,12 @@ public:
     Setter sirup_valve;
     Setter water_pump;
     Setter water_valve;
-    SerialPort port;
+    // SerialPort port;
 
     //LCDScreen lcd;
-    Getter keypad;
-    Getter distance;
-    Getter temperature;
+    //Getter keypad;
+//    Getter distance;
+//    Getter temperature;
     Getter reflex;
 
     cppAdapter(py::object &plantmod) : plantMod(plantmod) {
@@ -128,11 +128,11 @@ public:
         sirup_valve = Setter("sirup_valve", proxy);
         water_pump = Setter("water_pump", proxy);
         water_valve = Setter("water_valve", proxy);
-        port = SerialPort("port", proxy);
+        // port = SerialPort("port", proxy);
         //lcd = LCDScreen("lcd", proxy);
-        keypad = Getter("keypad", proxy);
-        distance = Getter("distance", proxy);
-        temperature = Getter("temperature", proxy);
+        //keypad = Getter("keypad", proxy);
+//        distance = Getter("distance", proxy);
+//        temperature = Getter("temperature", proxy);
         reflex = Getter("reflex", proxy);
     }
 };

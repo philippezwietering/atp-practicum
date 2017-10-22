@@ -12,16 +12,16 @@ from time import sleep
 from Simulator import Plant, Simulator
 import Simproxy
 
-# plant = Plant()
-# hw = Simproxy.lemonator(plant)
-# yled = hw.led_yellow
-# gled = hw.led_green
-# heat = hw.heater
-# wpump = hw.water_pump
-# spump = hw.sirup_pump
-# afstand = hw.distance
-# reflex = hw.reflex
-# lcd = hw.lcd
+plant = Plant()
+hw = Simproxy.lemonator(plant)
+yled = hw.led_yellow
+gled = hw.led_green
+heat = hw.heater
+wpump = hw.water_pump
+spump = hw.sirup_pump
+afstand = hw.distance
+reflex = hw.reflex
+lcd = hw.lcd
 
 class Controller:
 
@@ -44,5 +44,5 @@ class Controller:
         #print(reflex.get())
         pass
 
-#sim = Simulator(plant, Controller(), True)
-#sim.run()
+# sim = Simulator(plant, Controller(), True)
+# sim.run()
