@@ -11,6 +11,8 @@
 
 namespace py = pybind11;
 
+//py::object bufferingModule = py::module::import("buffering").attr("buffering");
+
 class Setter{
     std::string s;
     py::object proxy;
@@ -52,23 +54,23 @@ public:
     }
 
     bool get(hwlib::buffering buf = hwlib::buffering::unbuffered){
-        return proxy.attr(s.c_str()).attr("get")(buf).cast<bool>();
+        return proxy.attr(s.c_str()).attr("get")(py::cast(buf)).cast<bool>();//Hij pakt deze cast niet en hij laadt de module bovenaan niet
     }
 };
 
-class LCDScreen{
-    std::string s;
-    py::object proxy;
+// class LCDScreen{
+//     std::string s;
+//     py::object proxy;
 
-public:
-    LCDScreen(){}
+// public:
+//     LCDScreen(){}
 
-    LCDScreen(std::string s, py::object proxy): s(s), proxy(proxy){}
+//     LCDScreen(std::string s, py::object proxy): s(s), proxy(proxy){}
 
-    void putc(char c){
-        proxy.attr(s.c_str()).attr("putc")(c);
-    }
-};
+//     void putc(char c){
+//         proxy.attr(s.c_str()).attr("putc")(py::cast(c));
+//     }
+// };
 
 class SerialPort{
     std::string s;
@@ -84,7 +86,7 @@ public:
     }
 
     void write(std::string & text){
-        proxy.attr(s.c_str()).attr("write")(text);
+        proxy.attr(s.c_str()).attr("write")(py::cast(text));
     }
 
     void clear(){
@@ -92,7 +94,7 @@ public:
     }
 
     std::string transaction(std::string &text, bool response = true){
-        proxy.attr(s.c_str()).attr("transaction")(text, response).cast<std::string>();
+        proxy.attr(s.c_str()).attr("transaction")(py::cast(text), py::cast(response)).cast<std::string>();
     }
 };
 
@@ -105,11 +107,34 @@ public:
 
     Setter led_yellow;
     Setter led_green;
+    Setter heater;
+    Setter sirup_pump;
+    Setter sirup_valve;
+    Setter water_pump;
+    Setter water_valve;
+    SerialPort port;
+
+    //LCDScreen lcd;
+    Getter keypad;
+    Getter distance;
+    Getter temperature;
+    Getter reflex;
 
     cppAdapter(py::object &plantmod) : plantMod(plantmod) {
         proxyMod = py::module::import("Simproxy").attr("lemonator");
         proxy = proxyMod(plantmod);
         led_yellow = Setter("led_yellow", proxy);
         led_green = Setter("led_green", proxy);
+        heater = Setter("heater", proxy);
+        sirup_pump = Setter("sirup_pump", proxy);
+        sirup_valve = Setter("sirup_valve", proxy);
+        water_pump = Setter("water_pump", proxy);
+        water_valve = Setter("water_valve", proxy);
+        port = SerialPort("port", proxy);
+        //lcd = LCDScreen("lcd", proxy);
+        keypad = Getter("keypad", proxy);
+        distance = Getter("distance", proxy);
+        temperature = Getter("temperature", proxy);
+        reflex = Getter("reflex", proxy);
     }
 };

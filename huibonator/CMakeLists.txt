@@ -8,9 +8,10 @@ set(CMAKE_CXX_COMPILER g++)
 
 include_directories("../externals/RS-232/")
 include_directories("../externals/hwlib/library/")
-include_directories("/home/dorf/Git/pybind11/include/")
+include_directories("/home/philippe/Downloads/pybind11-master/include/")
 
-
+find_package(pybind11 REQUIRED)
+pybind11_add_module(buffering buffering.cpp)
 
 set(LIBRARY_SOURCES
     ../externals/RS-232/rs232.c
