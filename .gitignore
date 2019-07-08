@@ -8,3 +8,11 @@ _codelite.workspace
 *.ld
 *.map
 bmptk_*_stack.c
+
+
+*.synctex.gz
+*.out
+*.log
+*.aux
+
+/.vscode
