@@ -18,6 +18,9 @@ lcd = hw.lcd
 
 class Controller:
 
+    def __init__(self, plant):
+        self._plant = plant
+
     def update(self) -> None:
         # if not self._Controller__effectors['heater'].isOn():
         #     if self._Controller__sensors['temp'].readValue() + tempReaction < tempSetPoint:

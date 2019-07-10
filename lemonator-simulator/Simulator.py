@@ -9,7 +9,6 @@ from Sensor import *
 
 
 class Plant:
-
     def __init__(self):
         self._vessels = {'mix': MixtureVessel(amount=0, temperature=20, colour=0)}
         self._vessels['a'] = Vessel(colour=0, amount=storageMax, flowTo=self._vessels['mix'])
@@ -49,10 +48,9 @@ class Plant:
 
 
 class Simulator:
-
-    def __init__(self, plant, controller, gui: bool=False):
-        self._Simulator__plant = plant
-        self._Simulator__controller = controller
+    def __init__(self, gui: bool=False):
+        self._Simulator__plant = Plant()
+        self._Simulator__controller = Controller(self._Simulator__plant)
         self._Simulator__monitor = Monitor(self._Simulator__plant._sensors, self._Simulator__plant._effectors)
         if gui:
             self._Simulator__gui = GUI(self._Simulator__plant, self._Simulator__controller, self._Simulator__monitor)
@@ -76,7 +74,6 @@ class Simulator:
 
 
 class Monitor:
-
     def __init__(self, sensors: Dict[str, Sensor],
                  effectors: Dict[str, Effector]):
         self._Monitor__sensors = sensors
@@ -98,5 +95,5 @@ class Monitor:
 
 
 if __name__ == '__main__':
-    simulator = Simulator(Plant(), )
+    simulator = Simulator()
     simulator.run()
