@@ -1,15 +1,7 @@
-# uncompyle6 version 2.12.0
-# Python bytecode 3.5 (3350)
-# Decompiled from: Python 3.5.2 (default, Nov 17 2016, 17:05:23)
-# [GCC 5.4.0 20160609]
-# Embedded file name: .\Effector.py
-# Compiled at: 2017-08-29 16:43:31
-# Size of source mod 2**32: 1451 bytes
 from Vessel import Vessel, MixtureVessel
 from Constants import *
 
 class Effector:
-
     def __init__(self, vessel: Vessel):
         self._vessel = vessel
         self._value = False
@@ -45,7 +37,6 @@ class Valve(Effector):
 
 
 class Heater(Effector):
-
     def update(self) -> None:
         if self._value:
             if isinstance(self._vessel, MixtureVessel):
@@ -54,7 +45,6 @@ class Heater(Effector):
             self._vessel.heat(False)
 
 class Led(Effector):
-
     def toggle(self):
         if self.isOn():
             self.switchOff()
@@ -62,6 +52,5 @@ class Led(Effector):
             self.switchOn()
 
 class LCD(Effector):
-
     def put(self, char):
         print(char, end='', flush=True)

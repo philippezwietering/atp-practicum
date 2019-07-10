@@ -21,7 +21,6 @@ PYBIND11_MODULE( lemonator, m ) {
 
    py::class_< lemonator_proxy >( m, "lemonator" )
       .def( py::init< int >() )
-      .def_readonly( "led_yellow", &lemonator_proxy::p_led_yellow )
       .def_readwrite( "port", &lemonator_proxy::port )
       .def_readonly( "lcd", &lemonator_proxy::p_lcd )
       .def_readonly( "keypad", &lemonator_proxy::p_keypad)
@@ -34,7 +33,8 @@ PYBIND11_MODULE( lemonator, m ) {
       .def_readonly( "sirup_valve", &lemonator_proxy::p_sirup_valve)
       .def_readonly( "water_pump", &lemonator_proxy::p_water_pump)
       .def_readonly( "water_valve", &lemonator_proxy::p_water_valve)
-      .def_readonly( "led_green", &lemonator_proxy::p_led_green);
+      .def_readonly( "led_green", &lemonator_proxy::p_led_green)
+      .def_readonly( "led_yellow", &lemonator_proxy::p_led_yellow);
 
    py::class_< sensor_proxy >(m, "sensor_proxy")
       .def( py::init< serial_port&, std::string >() )

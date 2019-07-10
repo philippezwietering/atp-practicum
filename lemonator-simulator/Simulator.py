@@ -1,13 +1,7 @@
-# uncompyle6 version 2.12.0
-# Python bytecode 3.5 (3350)
-# Decompiled from: Python 3.5.2 (default, Nov 17 2016, 17:05:23)
-# [GCC 5.4.0 20160609]
-# Embedded file name: .\Simulator.py
-# Compiled at: 2017-08-30 16:00:41
-# Size of source mod 2**32: 3405 bytes
 import time
 from typing import Dict
 
+from Controller import *
 from Constants import *
 from Effector import *
 from Gui import GUI
@@ -104,5 +98,5 @@ class Monitor:
 
 
 if __name__ == '__main__':
-    simulator = Simulator(True)
+    simulator = Simulator(Plant(), )
     simulator.run()

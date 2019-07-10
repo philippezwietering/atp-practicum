@@ -1,10 +1,3 @@
-# uncompyle6 version 2.12.0
-# Python bytecode 3.5 (3350)
-# Decompiled from: Python 3.5.2 (default, Nov 17 2016, 17:05:23)
-# [GCC 5.4.0 20160609]
-# Embedded file name: .\Controller.py
-# Compiled at: 2017-08-29 16:53:26
-# Size of source mod 2**32: 1554 bytes
 from Effector import Effector
 from Sensor import Sensor, TemperatureSensor, LevelSensor, ColourSensor
 from Constants import *
@@ -40,10 +33,10 @@ class Controller:
         #     self._Controller__effectors['pumpA'].switchOff()
         #     self._Controller__effectors['pumpB'].switchOff()
 
-        #/print(afstand.read_mm())
-        #print(reflex.get())
+        # print(afstand.read_mm())
+        # print(reflex.get())
         pass
 
 
-sim = Simulator(plant, Controller(), True)
-sim.run()
+# sim = Simulator(plant, Controller(), True)
+# sim.run()

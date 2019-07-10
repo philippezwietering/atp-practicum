@@ -16,15 +16,10 @@ import unittest
 # lcd = hw.lcd
 
 def runsim(sim, amount):
-
-    if amount < 1:
-        print("please specify the amount of cycles")
-
-    for i in range(amount):
+    for _ in range(amount):
         sim._Simulator__plant.update()
 
 class Controller:
-
     def update(self):
         pass
 
@@ -71,7 +66,7 @@ class lemonatorsymtests(unittest.TestCase):
 
 
 
-    def testMixVesselPrecence(self):
+    def testMixVesselPresence(self):
         mixves = self.plant._vessels['mix']
 
         print("\ntest removing and returning of the cup")
@@ -89,7 +84,7 @@ class lemonatorsymtests(unittest.TestCase):
         runsim(self.sim, 10)
         self.assertTrue(mixves.getPresence())
 
-    def testFluidHandleing(self):
+    def testFluidHandling(self):
         wpump = self.hw.water_pump
         spump = self.hw.sirup_pump
 
@@ -111,7 +106,7 @@ class lemonatorsymtests(unittest.TestCase):
         runsim(self.sim, 10)
         wpump.set(0)
 
-        #wartervessel should have less fluid
+        #watervessel should have less fluid
         self.assertTrue(waterves.getFluidAmount() < storageMax)
 
         #mixves should have more liqid now
@@ -298,4 +293,4 @@ class lemonatorsymtests(unittest.TestCase):
         runsim(self.sim, 100)
         self.assertTrue(exmixves._temperature < rissentemp)
 
-unittest.main()
+#unittest.main()
