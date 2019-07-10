@@ -16,3 +16,4 @@ bmptk_*_stack.c
 *.aux
 
 /.vscode
+*/__pycache__/
