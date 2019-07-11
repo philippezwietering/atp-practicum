@@ -8,6 +8,7 @@ pressureRampUp = 3      # amount of seconds to build up enough pressure to make 
 pressureRampDown = 20   # amount of time before liquid stops flowing after the air pump has been switched off
 
 liquidMax = 2000        # amount (in ml) of liquid that can maximally go into the containers (pi * 10 * 10 * 6.5; diameter 10cm, height ~6.5cm)
+storageMax = 20000      # amount in mL of liquid that can be in the storage vessels
 environmentTemp = 20    # environmentalTemperature
 
 tempConversion = 0.05   # 0.00V = 0.0 degrees celsius; steps of 0.05V per degree celsius above 0
@@ -24,6 +25,9 @@ tempReaction = 0.05
 levelReaction = 0.07
 colourReaction = 0.05
 
+"""Levelsensor min and max. Min is emptu cup max is full cup"""
+sensorMin = 95
+sensorMax = 34
 
 """GUI Constants"""
 screensize = (1024, 768)
