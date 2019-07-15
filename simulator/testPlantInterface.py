@@ -1,5 +1,5 @@
 # This file performs unittests on calling all different kinds of functions defined by the effectors and sensors, so basically the plant
-# This does not cover the testing of the __init__ of each of those objects, because you can't use the proxy for that
+# This does not cover the testing of the __init__ of each of those objects, because you can't use the proxy for that, since the objects should already exist
 
 from time import sleep
 import unittest
@@ -20,16 +20,16 @@ class testEffector(TestCase):
         self.eff.switchOn()
         self.eff.update()
 
-        self.mock.switchOff.assert_called_once()
-        self.mock.switchOn.assert_called_once()
-        self.mock.update.assert_called_once()
+        self.mock.switchOff.assert_called_once_with()
+        self.mock.switchOn.assert_called_once_with()
+        self.mock.update.assert_called_once_with()
 
     def testIsOnCall(self):
         self.mock.isOn.return_value = True
         
         testResult = self.eff.isOn()
         self.assertEqual(True, testResult)
-        self.mock.isOn.assert_called_once()
+        self.mock.isOn.assert_called_once_with()
     
 class testValve(TestCase):
     def setUp(self):
@@ -44,7 +44,7 @@ class testValve(TestCase):
 
         self.valve.setPump(mockPump)
 
-        self.mockValve.setPump.assert_called_once()
+        self.mockValve.setPump.assert_called_once_with(mockPump)
 
 # I have chosen not to test the effectors and sensors that only implement overloaded functions, 
 # because their test cases should already be covered by their parents, 
@@ -65,12 +65,12 @@ class testLed(TestCase):
         testResult = self.led.getColour()
 
         self.assertEquals(testResult, mockColour)
-        self.mockLed.getColour.assert_called_once()
+        self.mockLed.getColour.assert_called_once_with()
     
     def testToggleCall(self):
         self.led.toggle()
 
-        self.mockLed.toggle.assert_called_once()
+        self.mockLed.toggle.assert_called_once_with()
 
 class testLcd(TestCase):
     def setUp(self):
@@ -81,22 +81,22 @@ class testLcd(TestCase):
         self.assertIs(self.mockLcd, self.lcd.effector)
 
     def testGetLinesCall(self):
-        self.mockLcd.getLines.return_value = "Testing the getLines"
+        self.mockLcd.getLines.return_value = "Testing the getLines call"
 
         testResult = self.lcd.getLines()
 
-        self.assertEqual("Testing the getLines", testResult)
-        self.mockLcd.getLines.assert_called_once()
+        self.assertEqual("Testing the getLines call", testResult)
+        self.mockLcd.getLines.assert_called_once_with()
 
     def testPushStringCall(self):
-        testString = "Testing the pushString"
+        testString = "Testing the pushString call"
 
         self.lcd.pushString(testString)
 
         self.mockLcd.pushString.assert_called_once_with(testString)
 
     def testPutCall(self):
-        testString = "Testing the put"
+        testString = "Testing the put call"
 
         self.lcd.put(testString)
 
@@ -105,10 +105,69 @@ class testLcd(TestCase):
     def testClearCall(self):
         self.lcd.clear()
 
-        self.mockLcd.clear.assert_called_once()
+        self.mockLcd.clear.assert_called_once_with()
 
 class testSensor(TestCase):
     def setUp(self):
+        self.mock = Mock(spec_set=['update', 'readValue', 'measure', '_convertToValue'])
+        self.sensor = SimProxy.Sensor(self.mock)
+    
+    def testInitialization(self):
+        self.assertIs(self.mock, self.sensor.sensor)
+    
+    def testUpdateCall(self):
+        self.sensor.update()
+
+        self.mock.update.assert_called_once_with()
+
+    def testReadValueCall(self):
+        self.mock.readValue.return_value = 3.14
+
+        testResult = self.sensor.readValue()
+
+        self.assertEqual(3.14, testResult)
+        self.mock.readValue.assert_called_once_with()
+
+    def testMeasureCall(self):
+        self.mock.measure.return_value = "Testing the measure call"
+
+        testResult = self.sensor.measure()
+
+        self.assertEqual("Testing the measure call", testResult)
+        self.mock.measure.assert_called_once_with()
+
+    def test_convertToValueCall(self):
+        self.mock._convertToValue.return_value = 2.72
+
+        testResult = self.sensor._convertToValue()
+
+        self.assertEqual(2.72, testResult)
+        self.mock._convertToValue.assert_called_once_with()
+
+class testKeypad(TestCase):
+    def setUp(self):
+        self.mockKeypad = Mock(spec_set=['push', 'pop'])
+        self.keypad = SimProxy.keyPad(self.mockKeypad)
+
+    def testInitialization(self):
+        self.assertIs(self.mockKeypad, self.keypad.sensor)
+    
+    def testPushCall(self):
+        callValue = "Testing the push call"
+
+        self.keypad.push(callValue)
+
+        self.mockKeypad.push.assert_called_once_with(callValue)
+
+    def testPopCall(self):
+        expectedReturn = "Testing the pop call"
+
+        self.mockKeypad.pop.return_value = expectedReturn
+
+        testResult = self.keypad.pop()
+
+        self.assertEqual(expectedReturn, testResult)
+        self.mockKeypad.pop.assert_called_once_with()
 
 if __name__ == "__main__":
     unittest.main()
