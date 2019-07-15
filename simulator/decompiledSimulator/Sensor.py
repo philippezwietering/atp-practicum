@@ -1,11 +1,10 @@
-# uncompyle6 version 2.12.0
-# Python bytecode 3.5 (3350)
-# Decompiled from: Python 3.5.2 (default, Nov 17 2016, 17:05:23)
-# [GCC 5.4.0 20160609]
+# uncompyle6 version 3.3.5
+# Python bytecode 3.7 (3394)
+# Decompiled from: Python 3.7.3 (default, Jun 24 2019, 04:54:02) 
+# [GCC 9.1.0]
 # Embedded file name: .\Sensor.py
-# Compiled at: 2017-08-29 16:33:33
-# Size of source mod 2**32: 1866 bytes
-from Vessel import Vessel, MixtureVessel
+# Size of source mod 2**32: 2417 bytes
+from Vessel import Vessel
 from math import pi
 from Constants import *
 
@@ -74,27 +73,31 @@ class LevelSensor(Sensor):
     def _convertToValue(self) -> float:
         return round(self._value / levelConversion * pi * 10 * 10, 2)
 
-class ReflexSeonsor(Sensor):
-    def __init__(self, vessel: MixtureVessel):
-        Sensor.__init__(self, vessel)
 
-    def update(self):
-        self._value = self._vessel.getPresence()
+class PresenceSensor(Sensor):
 
-class keypadSensor(Sensor):
+    def update(self) -> None:
+        if type(self._vessel) != None:
+            self._value = self._vessel.getPresence()
+
+    def readValue(self) -> bool:
+        return self._value
+
+    def _convertToValue(self) -> bool:
+        return self._value
+
+
+class KeyPad(Sensor):
 
     def __init__(self):
         Sensor.__init__(self, None)
-        self._unitOfMeasure = ''
-        self._value = 0
-        self._read = ''
+        self._keysPressed = []
 
-    def pressKey(self, c):
-        if c not in [x for x in "0123456789ABCD*#"]:
-            return
-        self._read = c
+    def push(self, c: str) -> None:
+        self._keysPressed.append(c)
 
-    def getc(self):
-        retval = self._read
-        self._read = ''
-        return retval
+    def pop(self) -> str:
+        if len(self._keysPressed) > 0:
+            return self._keysPressed.pop(0)
+        else:
+            return '\x00'
