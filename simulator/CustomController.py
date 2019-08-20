@@ -58,15 +58,12 @@ class Controller:
         self.heaterTemperature = None
         self.targetRatio = ""
         self.latestKeyPress = None
-        
-        self.cupLevel = 0
+
         self.aLevel = Constants.storageMax
         self.bLevel = Constants.storageMax
     
     def initialize(self):
         self.lcd.clear()
-
-        self.cupLevel = self.level.readValue()
 
         while self.keypad.pop() != '\x00': # Emptying the buffer just in case
             pass
