@@ -1,8 +1,5 @@
 from time import sleep
-from Effector import Effector
-from Sensor import Sensor, TemperatureSensor, LevelSensor, ColourSensor, KeyPad
 import Constants
-from typing import Dict
 from enum import Enum, auto
 
 class LemonatorState(Enum):
