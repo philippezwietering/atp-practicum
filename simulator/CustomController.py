@@ -50,10 +50,12 @@ class Controller:
         self.state = LemonatorState.IDLE
         self.error = LemonatorErrors.NONE
 
-        self.targetLevel = ""
-        self.targetTemperature = ""
-        self.heaterTemperature = None
-        self.targetRatio = ""
+        self.inputLevel = ""
+        self.targetLevel = None
+        self.inputTemperature = ""
+        self.targetTemperature = None
+        self.inputRatio = ""
+        self.targetRatio = None
         self.latestKeyPress = None
 
         self.aLevel = Constants.storageMax
@@ -75,9 +77,9 @@ class Controller:
             self.state = LemonatorState.ERROR
             self.stopFlow() # Just to be sure
 
-            self.targetLevel = ""
-            self.targetTemperature = ""
-            self.targetRatio = ""
+            self.inputLevel = ""
+            self.inputTemperature = ""
+            self.inputRatio = ""
 
             self.displayError()
         
@@ -91,7 +93,7 @@ class Controller:
                 self.stopFlow()
                 self.error = LemonatorErrors.EMPTY_VESSEL_B
 
-        if self.targetTemperature != "" and self.state != LemonatorState.USER_SELECTING_HEAT or self.heaterTemperature:
+        if self.inputTemperature != "" and self.state != LemonatorState.USER_SELECTING_HEAT or self.targetTemperature:
             self.handleHeater()
 
         # State switch, Python doesn't have a built-in option for this
@@ -112,10 +114,10 @@ class Controller:
         self.checkHeckje()
         self.lcd.pushString("Press A to start\nPress # to cancel")
 
-        if type(self.targetLevel) != str:
-            self.targetLevel  = str(self.targetLevel)
-        if type(self.targetTemperature) != str:
-            self.targetTemperature = str(self.targetTemperature)
+        if type(self.inputLevel) != str:
+            self.inputLevel  = str(self.inputLevel)
+        if type(self.inputTemperature) != str:
+            self.inputTemperature = str(self.inputTemperature)
 
         if self.latestKeyPress == 'A':
             self.state = LemonatorState.USER_SELECTING_RATIO
@@ -124,30 +126,31 @@ class Controller:
         self.checkHeckje()
 
         if self.latestKeyPress.isdigit():
-            self.targetRatio += self.latestKeyPress
+            self.inputRatio += self.latestKeyPress
         
         if self.latestKeyPress == '*':
-            if self.targetRatio == "" or not self.targetRatio.isnumeric() or float(self.targetRatio or 0) <= 0:
+            if self.inputRatio == "" or not self.inputRatio.isnumeric() or float(self.inputRatio or 0) <= 0:
                 self.error = LemonatorErrors.INVALID_INPUT
                 return
             
-            self.targetRatio = float(self.targetRatio)
+            self.targetRatio = float(self.inputRatio)
+            self.inputRatio = ""
             self.state = LemonatorState.USER_SELECTING_VOLUME
 
-        self.lcd.pushString(f"Desired vol. ratio:\n1 to {self.targetRatio} | B to A (*)")
+        self.lcd.pushString(f"Desired vol. ratio:\n1 to {self.inputRatio} | B to A (*)")
 
     def userSelectingVolume(self):
         self.checkHeckje()
 
         if self.latestKeyPress.isdigit():
-            self.targetLevel += self.latestKeyPress
+            self.inputLevel += self.latestKeyPress
         
         if self.latestKeyPress == '*':
-            if self.targetLevel == "" or not self.targetLevel.isnumeric() or float(self.targetLevel or 0) <= 0:
+            if self.inputLevel == "" or not self.inputLevel.isnumeric() or float(self.inputLevel or 0) <= 0:
                 self.error = LemonatorErrors.INVALID_INPUT
                 return
 
-            self.targetLevel = float(self.targetLevel)
+            self.targetLevel = float(self.inputLevel)
             if self.targetLevel / (self.targetRatio + 1) > self.bLevel:
                 self.error = LemonatorErrors.B_SHORTAGE
                 return
@@ -161,32 +164,33 @@ class Controller:
                 self.error = LemonatorErrors.INVALID_INPUT
                 return
 
+            self.inputLevel = ""
             self.state = LemonatorState.USER_SELECTING_HEAT
 
-        self.lcd.pushString(f"Desired volume:\n{self.targetLevel} ml (*)")
+        self.lcd.pushString(f"Desired volume:\n{self.inputLevel} ml (*)")
 
     def userSelectingHeat(self):
         self.checkHeckje()
 
         if self.latestKeyPress.isdigit():
-            self.targetTemperature += self.latestKeyPress
+            self.inputTemperature += self.latestKeyPress
 
         if self.latestKeyPress == '*':
-            if self.targetTemperature == "" or not self.targetTemperature.isnumeric():
+            if self.inputTemperature == "" or not self.inputTemperature.isnumeric():
                 self.error = LemonatorErrors.INVALID_INPUT
                 return
 
-            self.targetTemperature = float(self.targetTemperature)
+            self.targetTemperature = float(self.inputTemperature)
             if self.targetTemperature < Constants.environmentTemp:
                 self.targetTemperature = Constants.environmentTemp
             if self.targetTemperature > 90:
                 self.error = LemonatorErrors.TEMP_TOO_HIGH
                 return
             
-            self.targetTemperature = float(self.targetTemperature)
+            self.inputTemperature = ""
             self.state = LemonatorState.DISPENSING_B
         
-        self.lcd.pushString(f"Desired temperature:\n{self.targetTemperature} °C (*)")
+        self.lcd.pushString(f"Desired temperature:\n{self.inputTemperature} °C (*)")
 
     def dispensingAState(self):
         self.checkHeckje()
@@ -203,10 +207,9 @@ class Controller:
             self.stopFlow()
             self.aLevel -= self.targetLevel * self.targetRatio / (self.targetRatio + 1)
             self.state = LemonatorState.IDLE
-            self.targetLevel = ""
-            self.heaterTemperature = self.targetTemperature
-            self.targetTemperature = ""
-            self.targetRatio = ""
+            self.inputLevel = ""
+            self.inputTemperature = ""
+            self.inputRatio = ""
         
         self.lcd.pushString(f"Dispensing A\n{round(self.level._convertToValue(), 0)}/{round(desiredALevel, 0)} progress")
 
@@ -245,7 +248,7 @@ class Controller:
             self.state = LemonatorState.IDLE
             self.stopFlow()
             self.heater.switchOff()
-            self.heaterTemperature = None
+            self.targetTemperature = None
             return
 
     def handleHeater(self):
@@ -253,11 +256,8 @@ class Controller:
             self.heater.switchOff()
             return
         
-        target = self.targetTemperature
-        if self.targetTemperature == "" and self.heaterTemperature:
-            target = self.heaterTemperature
-        if self.temperature._convertToValue() < target:
-                self.heater.switchOn()
+        if self.targetTemperature and self.temperature._convertToValue() < self.targetTemperature:
+            self.heater.switchOn()
         else:
             self.heater.switchOff()
 
