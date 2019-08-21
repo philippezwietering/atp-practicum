@@ -2,10 +2,10 @@
 
 import unittest
 from unittest import TestCase
-from unittest.mock import Mock
 
 import CustomController
 from CustomController import LemonatorErrors, LemonatorState
+
 import SimProxy
 import Simulator
 import Sensor
@@ -87,7 +87,9 @@ class testControllerStates(TestCase):
 
         self.assertEqual(self.ctl.keypad.pop(), '\x00')
         self.assertIsNone(self.ctl.latestKeyPress)
-        self.assertEqual(self.ctl.targetLevel, "")
-        self.assertEqual(self.ctl.targetRatio, "")
-        self.assertEqual(self.ctl.targetTemperature, "")
-        self.assertIsNone(self.ctl.heaterTemperature)
+        self.assertIsNone(self.ctl.targetLevel)
+        self.assertIsNone(self.ctl.targetRatio)
+        self.assertIsNone(self.ctl.targetTemperature)
+        self.assertEqual(self.ctl.inputLevel, "")
+        self.assertEqual(self.ctl.inputRatio, "")
+        self.assertEqual(self.ctl.inputTemperature, "")
