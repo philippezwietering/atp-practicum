@@ -16,7 +16,7 @@ enum LemonatorState{
     USER_SELECTING_RATIO
 };
 
-enum ErrorStates{
+enum LemonatorErrors{
     NONE,
     INVALID_INPUT,
     TEMP_TOO_HIGH,
@@ -52,7 +52,7 @@ public:
     py::object lcd;
 
     LemonatorState state;
-    ErrorStates error;
+    LemonatorErrors error;
 
     std::string inputLevel;
     std::string inputTemperature;

@@ -92,15 +92,15 @@ py::enum_<LemonatorState>(module, "LemonatorState").value("IDLE", LemonatorState
                                                    .value("USER_SELECTING_RATIO", LemonatorState::USER_SELECTING_RATIO)
                                                    .export_values();
 
-// ErrorStates
-py::enum_<ErrorStates>(module, "ErrorStates").value("NONE", ErrorStates::NONE)
-                                             .value("INVALID_INPUT", ErrorStates::INVALID_INPUT)
-                                             .value("TEMP_TOO_HIGH", ErrorStates::TEMP_TOO_HIGH)
-                                             .value("EMPTY_VESSEL_A", ErrorStates::EMPTY_VESSEL_A)
-                                             .value("EMPTY_VESSEL_B", ErrorStates::EMPTY_VESSEL_B)
-                                             .value("CUP_REMOVED", ErrorStates::CUP_REMOVED)
-                                             .value("A_SHORTAGE", ErrorStates::A_SHORTAGE)
-                                             .value("B_SHORTAGE", ErrorStates::B_SHORTAGE)
+// LemonatorErrors
+py::enum_<LemonatorErrors>(module, "LemonatorErrors").value("NONE", LemonatorErrors::NONE)
+                                             .value("INVALID_INPUT", LemonatorErrors::INVALID_INPUT)
+                                             .value("TEMP_TOO_HIGH", LemonatorErrors::TEMP_TOO_HIGH)
+                                             .value("EMPTY_VESSEL_A", LemonatorErrors::EMPTY_VESSEL_A)
+                                             .value("EMPTY_VESSEL_B", LemonatorErrors::EMPTY_VESSEL_B)
+                                             .value("CUP_REMOVED", LemonatorErrors::CUP_REMOVED)
+                                             .value("A_SHORTAGE", LemonatorErrors::A_SHORTAGE)
+                                             .value("B_SHORTAGE", LemonatorErrors::B_SHORTAGE)
                                              .export_values();
 
 py::class_<Controller>(module, "Controller").def(py::init<py::object&, py::object&, py::object&, py::object&, py::object&, 
