@@ -1,5 +1,8 @@
+import cppimport.import_hook
+
 import Simulator
 import CustomController
+import CPPController
 import Gui
 import SimProxy
 
@@ -32,8 +35,7 @@ if __name__ == "__main__":
     keypad = proxy.keyPad(simulator._Simulator__plant._sensors['keypad'])
     lcd = proxy.Lcd(simulator._Simulator__plant._effectors['lcd'])
 
-    controller = CustomController.Controller(pumpA, pumpB, valveA, valveB, ledRedA, ledGreenA, ledRedB, ledGreenB, ledGreenM, ledYellowM, 
-                                             heater, temperature, level, presence, colour, keypad, lcd)
+    controller = CPPController.Controller(pumpA, pumpB, valveA, valveB, ledRedA, ledGreenA, ledRedB, ledGreenB, ledGreenM, ledYellowM, heater, temperature, level, presence, colour, keypad, lcd)
     controller.initialize()
 
 
