@@ -84,15 +84,15 @@ class Controller:
 
             self.displayError()
         
-        if self.pumpA.isOn():
-            if self.aLevel <= 0:
-                self.stopFlow()
-                self.errorState = LemonatorErrors.EMPTY_VESSEL_A
+        # if self.pumpA.isOn():
+        #     if self.aLevel <= 0:
+        #         self.stopFlow()
+        #         self.errorState = LemonatorErrors.EMPTY_VESSEL_A
         
-        if self.pumpB.isOn():
-            if self.bLevel <= 0:
-                self.stopFlow()
-                self.errorState = LemonatorErrors.EMPTY_VESSEL_B
+        # if self.pumpB.isOn():
+        #     if self.bLevel <= 0:
+        #         self.stopFlow()
+        #         self.errorState = LemonatorErrors.EMPTY_VESSEL_B
 
         if self.inputTemperature != "" and self.state != LemonatorState.USER_SELECTING_HEAT or self.targetTemperature != -1:
             self.handleHeater()
@@ -163,7 +163,7 @@ class Controller:
             self.inputLevel = ""
             self.state = LemonatorState.USER_SELECTING_HEAT
 
-        self.lcd.pushString(f"Desired volume:\n{self.inputLevel} ml (*)")
+        self.lcd.pushString(f"Desired volume:\n{self.inputLevel} mL (*)")
 
     def userSelectingHeat(self):
         self.checkHeckje()
@@ -181,13 +181,13 @@ class Controller:
                 self.targetTemperature = Constants.environmentTemp
             if self.targetTemperature > 90:
                 self.errorState = LemonatorErrors.TEMP_TOO_HIGH
-                self.targetTemperature = 1
+                self.targetTemperature = -1
                 return
             
             self.inputTemperature = ""
             self.state = LemonatorState.DISPENSING_B
         
-        self.lcd.pushString(f"Desired temperature:\n{self.inputTemperature} °C (*)")
+        self.lcd.pushString(f"Desired temperature:\n{self.inputTemperature} deg C (*)")
 
     def dispensingAState(self):
         self.checkHeckje()
@@ -196,22 +196,25 @@ class Controller:
             self.stopFlow()
             self.errorState = LemonatorErrors.CUP_REMOVED
             return
-        
-        self.dispenseA()
 
         desiredALevel = self.startLevel + self.targetLevel
         if self.level._convertToValue() >= desiredALevel:
             self.stopFlow()
             self.aLevel -= self.targetLevel * self.targetRatio / (self.targetRatio + 1)
             self.state = LemonatorState.IDLE
+            return
         
-        self.lcd.pushString(f"Dispensing A\n{round(self.level._convertToValue(), 0)}/{round(desiredALevel, 0)} progress")
+        self.dispenseA()
+
+        self.lcd.pushString(f"Dispensing A\n{int(self.level._convertToValue())}/{int(desiredALevel)} progress")
 
     def dispenseA(self):
         if not self.pumpA.isOn():
             self.pumpA.switchOn()
         if self.valveA.isOn():
             self.valveA.switchOff()
+        
+        self.checkHeckje()
 
     def dispensingBState(self):
         self.checkHeckje()
@@ -220,22 +223,25 @@ class Controller:
             self.stopFlow()
             self.errorState = LemonatorErrors.CUP_REMOVED
             return
-        
-        self.dispenseB()
 
         desiredBLevel = self.startLevel + self.targetLevel / (self.targetRatio + 1)
         if self.level._convertToValue() >= desiredBLevel:
             self.stopFlow()
             self.bLevel -= self.targetLevel / (self.targetRatio + 1)
             self.state = LemonatorState.DISPENSING_A
+            return
 
-        self.lcd.pushString(f"Dispensing B\n{round(self.level._convertToValue(), 0)}/{round(desiredBLevel, 0)} progress")
+        self.dispenseB()
+
+        self.lcd.pushString(f"Dispensing B\n{int(self.level._convertToValue())}/{int(desiredBLevel)} progress")
 
     def dispenseB(self):
         if not self.pumpB.isOn():
             self.pumpB.switchOn()
         if self.valveB.isOn():
             self.valveB.switchOff()
+        
+        self.checkHeckje()
 
     def checkHeckje(self):
         if self.latestKeyPress == '#':
@@ -247,6 +253,7 @@ class Controller:
     def handleHeater(self):
         if not self.presence.readValue():
             self.heater.switchOff()
+            self.targetTemperature = -1
             return
         
         if self.targetTemperature >= 0 and self.temperature._convertToValue() < self.targetTemperature:

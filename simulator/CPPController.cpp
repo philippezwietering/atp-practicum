@@ -57,19 +57,19 @@ void Controller::update(){
         displayError();
     }
 
-    if(pumpA.attr("isOn")().cast<bool>()){
-        if(aLevel <= 0){
-            stopFlow();
-            errorState = EMPTY_VESSEL_A;
-        }
-    }
+    // if(pumpA.attr("isOn")().cast<bool>()){
+    //     if(aLevel <= 0){
+    //         stopFlow();
+    //         errorState = EMPTY_VESSEL_A;
+    //     }
+    // }
 
-    if(pumpB.attr("isOn")().cast<bool>()){
-        if(bLevel <= 0){
-            stopFlow();
-            errorState = EMPTY_VESSEL_B;
-        }
-    }
+    // if(pumpB.attr("isOn")().cast<bool>()){
+    //     if(bLevel <= 0){
+    //         stopFlow();
+    //         errorState = EMPTY_VESSEL_B;
+    //     }
+    // }
 
     if((inputTemperature.compare("") != 0 && state != USER_SELECTING_HEAT) || targetTemperature != -1){
         handleHeater();
@@ -148,7 +148,7 @@ void Controller::userSelectingVolume(){
         inputLevel = "";
         state = USER_SELECTING_HEAT;
     }
-    lcd.attr("pushString")("Desired volume:\n" + inputLevel + " ml (*)");
+    lcd.attr("pushString")("Desired volume:\n" + inputLevel + " mL (*)");
 }
 
 void Controller::userSelectingHeat(){
@@ -189,19 +189,20 @@ void Controller::dispensingAState(){
         return;
     }
 
-    dispenseA();
-
     float desiredALevel = startLevel + targetLevel;
     float currentLevel = level.attr("_convertToValue")().cast<float>();
     if(currentLevel >= desiredALevel){
         stopFlow();
         aLevel -= targetLevel * targetRatio / (targetRatio + 1);
         state = IDLE;
+        return;
     }
+
+    dispenseA();
 
     std::string levelString = std::to_string((int)currentLevel);
     std::string desiredString = std::to_string((int)desiredALevel);
-    lcd.attr("pushString")("Dispensing A\n" + levelString + " / " + desiredString + " progress");
+    lcd.attr("pushString")("Dispensing A\n" + levelString + "/" + desiredString + " progress");
 }
 
 void Controller::dispenseA(){
@@ -212,6 +213,8 @@ void Controller::dispenseA(){
     if(valveA.attr("isOn")().cast<bool>()){
         valveA.attr("switchOff")();
     }
+
+    checkHeckje();
 }
 
 void Controller::dispensingBState(){
@@ -223,20 +226,20 @@ void Controller::dispensingBState(){
         return;
     }
 
-    dispenseB();
-
     float desiredBLevel = startLevel + targetLevel / (targetRatio + 1);
-    py::print(py::cast(desiredBLevel));
     float currentLevel = level.attr("_convertToValue")().cast<float>();
     if(currentLevel >= desiredBLevel){
         stopFlow();
         bLevel -= targetLevel / (targetRatio + 1);
         state = DISPENSING_A;
+        return;
     }
+
+    dispenseB();
 
     std::string levelString = std::to_string((int)currentLevel);
     std::string desiredString = std::to_string((int)desiredBLevel);
-    lcd.attr("pushString")("Dispensing B\n" + levelString + " / " + desiredString + " progress");
+    lcd.attr("pushString")("Dispensing B\n" + levelString + "/" + desiredString + " progress");
 }
 
 void Controller::dispenseB(){
@@ -247,6 +250,8 @@ void Controller::dispenseB(){
     if(valveB.attr("isOn")().cast<bool>()){
         valveB.attr("switchOff")();
     }
+
+    checkHeckje();
 }
 
 void Controller::checkHeckje(){
@@ -261,6 +266,7 @@ void Controller::checkHeckje(){
 void Controller::handleHeater(){
     if(!(presence.attr("readValue")().cast<bool>())){
         heater.attr("switchOff")();
+        targetTemperature = -1;
         return;
     }
 
@@ -318,7 +324,7 @@ void Controller::displayError(){
         case EMPTY_VESSEL_A: errorMessage = "Vessel A is empty"; break;
         case EMPTY_VESSEL_B: errorMessage = "Vessel B is empty"; break;
         case INVALID_INPUT: errorMessage = "Input is invalid"; break;
-        case TEMP_TOO_HIGH: errorMessage = "Input temp is too high"; break;
+        case TEMP_TOO_HIGH: errorMessage = "Input temp too high"; break;
         case CUP_REMOVED: errorMessage = "Cup was removed"; break;
         case A_SHORTAGE: errorMessage = "Too little in A"; break;
         case B_SHORTAGE: errorMessage = "Too little in B"; break;
@@ -395,6 +401,7 @@ py::class_<Controller>(module, "Controller").def(py::init<py::object&, py::objec
                                             .def_readwrite("inputTemperature", &Controller::inputTemperature)
                                             .def_readwrite("inputRatio", &Controller::inputRatio)
                                             .def_readwrite("targetLevel", &Controller::targetLevel)
+                                            .def_readwrite("startLevel", &Controller::startLevel)
                                             .def_readwrite("targetTemperature", &Controller::targetTemperature)
                                             .def_readwrite("targetRatio", &Controller::targetRatio)
                                             .def_readwrite("latestKeyPress", &Controller::latestKeyPress)

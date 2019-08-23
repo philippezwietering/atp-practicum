@@ -1,4 +1,5 @@
 import cppimport.import_hook
+import argparse
 
 import Simulator
 import CustomController
@@ -7,6 +8,15 @@ import Gui
 import SimProxy
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Lemonator")
+    parser.add_argument("--py", help="Run the lemonator with the python controller", action="store_true")
+    parser.add_argument("--cpp", help="Run the lemonator with the cpp controller", action="store_true")
+    args = parser.parse_args()
+
+    if args.py and args.cpp:
+        print("You can't run both controllers simultaneously, please choose one")
+        exit()
+    
     simulator = Simulator.Simulator(False) # use Simulator(False) to disable the GUI
     proxy = SimProxy.SimProxy
 
@@ -35,9 +45,15 @@ if __name__ == "__main__":
     keypad = proxy.keyPad(simulator._Simulator__plant._sensors['keypad'])
     lcd = proxy.Lcd(simulator._Simulator__plant._effectors['lcd'])
 
-    controller = CPPController.Controller(pumpA, pumpB, valveA, valveB, ledRedA, ledGreenA, ledRedB, ledGreenB, ledGreenM, ledYellowM, heater, temperature, level, presence, colour, keypad, lcd)
-    controller.initialize()
+    controller = None
 
+    if args.cpp:
+        controller = CPPController.Controller(pumpA, pumpB, valveA, valveB, ledRedA, ledGreenA, ledRedB, ledGreenB, ledGreenM, ledYellowM, heater, temperature, level, presence, colour, keypad, lcd)
+
+    else:
+        controller = CustomController.Controller(pumpA, pumpB, valveA, valveB, ledRedA, ledGreenA, ledRedB, ledGreenB, ledGreenM, ledYellowM, heater, temperature, level, presence, colour, keypad, lcd)    
+    
+    controller.initialize()
 
     simulator._Simulator__controller = controller
     simulator._Simulator__gui = Gui.GUI(simulator._Simulator__plant, controller, simulator._Simulator__monitor)
